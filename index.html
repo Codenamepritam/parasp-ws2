@@ -3,8 +3,15 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Paraspect - Transforming Businesses with Intelligent Solutions Data . Depth . Direction </title>
+    <title>Paraspect - Transforming Businesses with Intelligent Solutions</title>
+    
+    <!-- =====================================================
+         CSS STYLES - MAJOR SECTIONS WITH HUMAN-READABLE COMMENTS
+         ===================================================== -->
     <style>
+        /* =====================================================
+           GLOBAL RESET & VARIABLES - Edit colors/fonts here
+           ===================================================== */
         * {
             margin: 0;
             padding: 0;
@@ -12,28 +19,31 @@
         }
 
         :root {
-            --primary: #5b7c99;
-            --primary-dark: #4a6378;
-            --secondary: #8ba5be;
-            --accent: #b8c9db;
-            --pastel-blue: #d4e2ed;
-            --pastel-gray: #e8eef3;
-            --text: #2c3e50;
-            --text-light: #6b7a8f;
-            --bg: #ffffff;
-            --bg-alt: #ffffff;
-            /*--bg-alt: #f7f9fc;  21-Jan.old*/
-            
+            /* COLOR SCHEME - Primary editing area for brand colors */
+            --primary: #5b7c99;        /* Main blue - buttons, accents */
+            --primary-dark: #4a6378;    /* Darker blue - hover states */
+            --secondary: #8ba5be;       /* Light blue - backgrounds */
+            --accent: #b8c9db;          /* Very light blue - subtle */
+            --pastel-blue: #d4e2ed;     /* Pastel backgrounds */
+            --pastel-gray: #e8eef3;     /* Light gray backgrounds */
+            --text: #2c3e50;            /* Dark text - headings */
+            --text-light: #6b7a8f;      /* Light text - body copy */
+            --bg: #ffffff;              /* White background */
+            --bg-alt: #ffffff;          /* Alternate background */
         }
 
+        /* BASE BODY STYLES - Controls main font family */
         body {
+            /* FONT FAMILY - Edit here for site-wide font changes */
             font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, sans-serif;
             line-height: 1.6;
             color: var(--text);
             overflow-x: hidden;
         }
 
-        /* Navigation */
+        /* =====================================================
+           NAVIGATION BAR - Fixed top navigation
+           ===================================================== */
         nav {
             position: fixed;
             width: 100%;
@@ -45,6 +55,7 @@
         }
 
         nav.scrolled {
+            /* SCROLL EFFECT - Darker shadow when scrolled */
             box-shadow: 0 4px 30px rgba(0,0,0,0.15);
         }
 
@@ -57,21 +68,22 @@
             padding: 1rem 2rem;
         }
 
+        /* LOGO STYLES - Edit logo size/color here */
         .logo {
-            font-size: 1.7rem;
-            font-weight: 700;
-            color: var(--primary);
+            font-size: 1.7rem;      /* Logo text size */
+            font-weight: 700;       /* Bold logo text */
+            color: var(--primary);  /* Logo color */
             text-decoration: none;
-            color: #4576B9
+            color: #4576B9;         /* Override color */
         }
 
         .logo-img {
-            height: 38px;         /* try 24–32px range */
+            height: 38px;           /* LOGO IMAGE HEIGHT - Edit 24-32px range */
             width: auto;
             margin-right: 6px;
             object-fit: contain;
             vertical-align: middle;
-         }
+        }
 
         .nav-links {
             display: flex;
@@ -88,6 +100,7 @@
         }
 
         .nav-links a::after {
+            /* UNDERLINE HOVER EFFECT */
             content: '';
             position: absolute;
             bottom: -5px;
@@ -102,6 +115,7 @@
             width: 100%;
         }
 
+        /* MOBILE HAMBURGER MENU */
         .mobile-toggle {
             display: none;
             flex-direction: column;
@@ -116,15 +130,17 @@
             transition: 0.3s;
         }
 
-        /* Hero Section */
+        /* =====================================================
+           HERO SECTION - Main landing section with background image
+           ===================================================== */
         .hero {
             height: 100vh;
-            /*background: linear-gradient(135deg, #5b7c99 0%, #8ba5be 50%, #b8c9db 100%); OLD PR 15-Oct-25*/
-            background-image: url('BK2.png'); /*New-  PR 15-OCT-25 */
-            background-size: cover; /* makes it fill the screen */
-            background-repeat: no-repeat; /* prevents tiling */
-            background-position: center center; /* keeps image centered */
-            background-attachment: scroll; 
+            /* BACKGROUND IMAGE - Replace 'BK2.png' with your hero image */
+            background-image: url('BK2.png');
+            background-size: cover;
+            background-repeat: no-repeat;
+            background-position: center center;
+            background-attachment: scroll;
             display: flex;
             align-items: center;
             justify-content: center;
@@ -134,6 +150,7 @@
             overflow: hidden;
         }
 
+        /* GRID ANIMATION BACKGROUND EFFECT */
         .hero::before {
             content: '';
             position: absolute;
@@ -152,7 +169,7 @@
         .hero-content {
             position: relative;
             z-index: 1;
-            max-width: 1200px; /*21 Jan Old value 800*/
+            max-width: 1200px;
             padding: 2rem;
             animation: fadeInUp 1s ease;
         }
@@ -168,18 +185,20 @@
             }
         }
 
+        /* HERO TEXT - Edit font sizes here */
         .hero h1 {
-            font-size: 3.9rem;
+            font-size: 3.9rem;      /* MAIN HEADING SIZE - Mobile: 2rem */
             margin-bottom: 1rem;
-            font-weight: 800;
+            font-weight: 800;       /* Extra bold */
         }
 
         .hero p {
-            font-size: 1.3rem;
+            font-size: 1.3rem;      /* SUBHEADING SIZE - Mobile: 1rem */
             margin-bottom: 2rem;
             opacity: 0.95;
         }
 
+        /* CTA BUTTON - Main call-to-action button */
         .cta-button {
             display: inline-block;
             padding: 1rem 2.5rem;
@@ -197,25 +216,29 @@
             box-shadow: 0 15px 40px rgba(0,0,0,0.3);
         }
 
-        /* Section Styles */
+        /* =====================================================
+           GENERAL SECTION STYLES - All content sections
+           ===================================================== */
         section {
-            padding: 5rem 2rem;
+            padding: 5rem 2rem;     /* SECTION PADDING - Edit vertical spacing here */
         }
 
         .container {
-            max-width: 1200px;
+            max-width: 1200px;      /* MAX CONTENT WIDTH */
             margin: 0 auto;
         }
 
+        /* SECTION TITLES - All "About Us", "Services", etc headings */
         .section-title {
             text-align: center;
-            font-size: 2.5rem;
+            font-size: 2.5rem;      /* TITLE FONT SIZE - Mobile: 2rem */
             margin-bottom: 3rem;
             color: var(--text);
             position: relative;
         }
 
         .section-title::after {
+            /* UNDERLINE DECORATION */
             content: '';
             display: block;
             width: 80px;
@@ -225,14 +248,16 @@
             border-radius: 2px;
         }
 
-        /* About Section */
+        /* =====================================================
+           ABOUT SECTION - Company description + graphic
+           ===================================================== */
         .about {
             background: var(--bg-alt);
         }
 
         .about-content {
             display: grid;
-            grid-template-columns: 1fr 1fr;
+            grid-template-columns: 1fr 1fr;     /* 2-column layout - Mobile: 1 column */
             gap: 4rem;
             align-items: center;
         }
@@ -240,16 +265,16 @@
         .about-text p {
             margin-bottom: 1rem;
             color: var(--text-light);
-            font-size: 1.1rem;
+            font-size: 1.1rem;                  /* BODY TEXT SIZE */
         }
 
+        /* ABOUT SECTION IMAGE PLACEHOLDER */
         .about-image {
             width: 100%;
-            height: 400px;
-            background-image: url('DDD.JPG'); */
-            /*background: linear-gradient(135deg, var(--primary), var(--secondary));*/
-             background-position: center;
-             background-size: cover;
+            height: 400px;                      /* IMAGE HEIGHT */
+            /* UNCOMMENT FOR BACKGROUND IMAGE: background-image: url('DDD.JPG'); */
+            background-position: center;
+            background-size: cover;
             background-repeat: no-repeat;
             border-radius: 22px;
             display: flex;
@@ -260,10 +285,12 @@
             font-weight: 600;
         }
 
-        /* Services Section */
+        /* =====================================================
+           SERVICES SECTION - 6 service cards grid
+           ===================================================== */
         .services-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));    /* Responsive 2-3 columns */
             gap: 2rem;
         }
 
@@ -282,7 +309,7 @@
         }
 
         .service-icon {
-            width: 60px;
+            width: 60px;                        /* ICON SIZE */
             height: 60px;
             background: linear-gradient(135deg, var(--primary), var(--secondary));
             border-radius: 12px;
@@ -295,7 +322,7 @@
         }
 
         .service-card h3 {
-            font-size: 1.7rem;
+            font-size: 1.7rem;                  /* SERVICE TITLE SIZE */
             margin-bottom: 1rem;
             color: var(--text);
         }
@@ -304,26 +331,26 @@
             color: var(--text-light);
         }
 
-        /* Portfolio Section */
+        /* =====================================================
+           PORTFOLIO/INDUSTRIES SECTION - Image cards with overlay
+           ===================================================== */
         .portfolio {
             background: var(--bg-alt);
         }
 
         .portfolio-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));    /* Responsive 2-3 columns */
             gap: 2rem;
         }
 
         .portfolio-item {
             position: relative;
-            height: 300px;
-            
+            height: 300px;                      /* CARD HEIGHT */
             border-radius: 15px;
             overflow: hidden;
             cursor: pointer;
-            background: linear-gradient(135deg, var(--primary), var(--secondary));
-            background-blend-mode: overlay;
+            /* BACKGROUND IMAGES SET INLINE IN HTML */
             background-size: cover;
             background-position: center;
         }
@@ -334,7 +361,7 @@
             left: 0;
             width: 100%;
             height: 100%;
-            background: rgba(90, 120, 200, 0.9);
+            background: rgba(90, 120, 200, 0.9);    /* OVERLAY COLOR */
             display: flex;
             flex-direction: column;
             align-items: center;
@@ -355,7 +382,9 @@
             margin-bottom: 0.5rem;
         }
 
-        /* Testimonials */
+        /* =====================================================
+           TESTIMONIALS SECTION - Client quotes
+           ===================================================== */
         .testimonials-grid {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
@@ -371,6 +400,7 @@
         }
 
         .testimonial::before {
+            /* QUOTE MARK DECORATION */
             content: '"';
             position: absolute;
             top: 1rem;
@@ -393,7 +423,7 @@
         }
 
         .author-avatar {
-            width: 50px;
+            width: 50px;                        /* AVATAR SIZE */
             height: 50px;
             border-radius: 50%;
             background: var(--primary);
@@ -404,24 +434,16 @@
             font-weight: 600;
         }
 
-        .author-info h4 {
-            color: var(--text);
-            font-size: 1rem;
-        }
-
-        .author-info p {
-            color: var(--text-light);
-            font-size: 0.9rem;
-        }
-
-        /* Contact Section */
+        /* =====================================================
+           CONTACT SECTION - Form + contact info
+           ===================================================== */
         .contact {
             background: var(--bg-alt);
         }
 
         .contact-content {
             display: grid;
-            grid-template-columns: 1fr 1fr;
+            grid-template-columns: 1fr 1fr;     /* 2-column - Mobile: 1 column */
             gap: 4rem;
         }
 
@@ -505,16 +527,9 @@
             flex-shrink: 0;
         }
 
-        .contact-details h3 {
-            margin-bottom: 0.5rem;
-            color: var(--text);
-        }
-
-        .contact-details p {
-            color: var(--text-light);
-        }
-
-        /* Footer */
+        /* =====================================================
+           FOOTER SECTION - Bottom links + copyright
+           ===================================================== */
         footer {
             background: var(--text);
             color: white;
@@ -555,8 +570,11 @@
             color: rgba(255,255,255,0.5);
         }
 
-        /* Responsive Design */
+        /* =====================================================
+           RESPONSIVE DESIGN - Mobile/tablet adjustments
+           ===================================================== */
         @media (max-width: 768px) {
+            /* MOBILE NAVIGATION */
             .nav-links {
                 display: none;
                 position: absolute;
@@ -577,6 +595,7 @@
                 display: flex;
             }
 
+            /* MOBILE HERO TEXT */
             .hero h1 {
                 font-size: 2rem;
             }
@@ -585,6 +604,7 @@
                 font-size: 1rem;
             }
 
+            /* MOBILE 1-COLUMN LAYOUTS */
             .about-content,
             .contact-content {
                 grid-template-columns: 1fr;
@@ -596,16 +616,20 @@
         }
     </style>
 </head>
+
+<!-- =====================================================
+     HTML BODY CONTENT - All sections clearly marked
+     ===================================================== -->
 <body>
-    <!-- Navigation -->
+    <!-- =====================================================
+         NAVIGATION BAR - Fixed top nav with logo + menu
+         ===================================================== -->
     <nav id="navbar">
         <div class="nav-container">
-             <!-- <a href="#" class="logo">PARASPECT</a> -->
             <a href="#" class="logo">
-            <img src="HRLOGO2.PNG" alt="Paraspect Logo" class="logo-img">
-             <span>PARASPECT</span>
-
-        </a>
+                <img src="HRLOGO2.PNG" alt="Paraspect Logo" class="logo-img">
+                <span>PARASPECT</span>
+            </a>
 
             <ul class="nav-links" id="navLinks">
                 <li><a href="#home">Home</a></li>
@@ -623,7 +647,9 @@
         </div>
     </nav>
 
-    <!-- Hero Section -->
+    <!-- =====================================================
+         HERO SECTION - Fullscreen landing with CTA
+         ===================================================== -->
     <section class="hero" id="home">
         <div class="hero-content">
             <h1>TRANSFORMING BUSINESSES WITH INTELLIGENT SOLUTIONS</h1>
@@ -632,7 +658,9 @@
         </div>
     </section>
 
-    <!-- About Section -->
+    <!-- =====================================================
+         ABOUT SECTION - Company story + graphic
+         ===================================================== -->
     <section class="about" id="about">
         <div class="container">
             <h2 class="section-title">About Us</h2>
@@ -643,21 +671,16 @@
                     <p>With expertise spanning AI integration, data analytics, and industry-specific solutions, we partner with organizations across healthcare, retail, and beyond to transform operations, enhance customer experiences, and achieve sustainable growth.</p>
                 </div>
                 <div class="about-image">
-                    <svg width="300" height="300" viewBox="0 0 300 300" style="filter: drop-shadow(0 10px 30px rgba(0,0,0,0.2));">
-                       <!-- <polygon points="150,30 230,80 230,180 150,230 70,180 70,80" fill="none" stroke="white" stroke-width="3"/>
-                        <polygon points="150,80 190,105 190,155 150,180 110,155 110,105" fill="none" stroke="white" stroke-width="2" opacity="0.7"/>
-                        <line x1="150" y1="30" x2="150" y2="230" stroke="white" stroke-width="2" opacity="0.6"/>
-                        <line x1="70" y1="80" x2="230" y2="180" stroke="white" stroke-width="2" opacity="0.6"/>
-                        <line x1="230" y1="80" x2="70" y2="180" stroke="white" stroke-width="2" opacity="0.6"/>
-                        <circle cx="150" cy="130" r="15" fill="white" opacity="0.9"/>
-                        <text x="150" y="270" text-anchor="middle" fill="white" font-size="18" font-weight="600">Data > Depth > Direction</text> -->
-                    </svg>
+                    <!-- ADD YOUR GRAPHIC HERE or uncomment background-image in CSS -->
+                    Data > Depth > Direction
                 </div>
             </div>
         </div>
     </section>
 
-    <!-- Services Section -->
+    <!-- =====================================================
+         SERVICES SECTION - 6 AI service cards
+         ===================================================== -->
     <section class="services" id="services">
         <div class="container">
             <h2 class="section-title">Our Services</h2>
@@ -696,34 +719,38 @@
         </div>
     </section>
 
-   <!-- Portfolio Section -->
-<section class="portfolio" id="industries">
-    <div class="container">
-        <h2 class="section-title">Industry-Specific Solutions</h2>
-        <div class="portfolio-grid">
-            <div class="portfolio-item" style="background-image: url('pharmacist.jpg');">
-                <div class="portfolio-overlay">
-                    <h3>🏥 Healthcare</h3>
-                    <p>Patient engagement platforms and healthcare analytics to improve care delivery and operational efficiency</p>
+    <!-- =====================================================
+         INDUSTRIES SECTION - Portfolio-style image cards
+         ===================================================== -->
+    <section class="portfolio" id="industries">
+        <div class="container">
+            <h2 class="section-title">Industry-Specific Solutions</h2>
+            <div class="portfolio-grid">
+                <div class="portfolio-item" style="background-image: url('pharmacist.jpg');">
+                    <div class="portfolio-overlay">
+                        <h3>🏥 Healthcare</h3>
+                        <p>Patient engagement platforms and healthcare analytics to improve care delivery and operational efficiency</p>
+                    </div>
                 </div>
-            </div>
-            <div class="portfolio-item" style="background-image: url('retail.jpg');">
-                <div class="portfolio-overlay">
-                    <h3>🛍️ Retail</h3>
-                    <p>Customer personalization engines and supply chain optimization powered by AI and predictive analytics</p>
+                <div class="portfolio-item" style="background-image: url('retail.jpg');">
+                    <div class="portfolio-overlay">
+                        <h3>🛍️ Retail</h3>
+                        <p>Customer personalization engines and supply chain optimization powered by AI and predictive analytics</p>
+                    </div>
                 </div>
-            </div>
-            <div class="portfolio-item" style="background-image: url('girlwithtab.png');">
-                <div class="portfolio-overlay">
-                    <h3>🏢 Enterprise</h3>
-                    <p>Custom AI solutions tailored to your industry's unique challenges and opportunities for growth</p>
+                <div class="portfolio-item" style="background-image: url('girlwithtab.png');">
+                    <div class="portfolio-overlay">
+                        <h3>🏢 Enterprise</h3>
+                        <p>Custom AI solutions tailored to your industry's unique challenges and opportunities for growth</p>
+                    </div>
                 </div>
             </div>
         </div>
-    </div>
-</section>
+    </section>
 
-    <!-- Testimonials Section -->
+    <!-- =====================================================
+         TESTIMONIALS SECTION - Client quotes
+         ===================================================== -->
     <section class="testimonials" id="testimonials">
         <div class="container">
             <h2 class="section-title">What Our Clients Say</h2>
@@ -762,7 +789,9 @@
         </div>
     </section>
 
-    <!-- Contact Section -->
+    <!-- =====================================================
+         CONTACT SECTION - Form + contact details
+         ===================================================== -->
     <section class="contact" id="contact">
         <div class="container">
             <h2 class="section-title">Get In Touch</h2>
@@ -809,7 +838,9 @@
         </div>
     </section>
 
-    <!-- Footer -->
+    <!-- =====================================================
+         FOOTER SECTION - Links + copyright
+         ===================================================== -->
     <footer>
         <div class="footer-content">
             <div class="footer-section">
@@ -843,14 +874,17 @@
         </div>
     </footer>
 
+    <!-- =====================================================
+         JAVASCRIPT - Interactive functionality
+         ===================================================== -->
     <script>
-        // Mobile menu toggle
+        // MOBILE MENU TOGGLE
         function toggleMenu() {
             const navLinks = document.getElementById('navLinks');
             navLinks.classList.toggle('active');
         }
 
-        // Smooth scrolling
+        // SMOOTH SCROLLING FOR NAV LINKS
         document.querySelectorAll('a[href^="#"]').forEach(anchor => {
             anchor.addEventListener('click', function (e) {
                 e.preventDefault();
@@ -862,7 +896,7 @@
             });
         });
 
-        // Navbar scroll effect
+        // NAVBAR SCROLL EFFECT
         window.addEventListener('scroll', () => {
             const navbar = document.getElementById('navbar');
             if (window.scrollY > 50) {
@@ -872,7 +906,7 @@
             }
         });
 
-        // Form submission
+        // CONTACT FORM HANDLER
         function handleSubmit(e) {
             e.preventDefault();
             const name = document.getElementById('name').value;
@@ -883,7 +917,7 @@
             e.target.reset();
         }
 
-        // Intersection Observer for animations
+        // SCROLL ANIMATIONS - Fade in on scroll
         const observerOptions = {
             threshold: 0.1,
             rootMargin: '0px 0px -100px 0px'
