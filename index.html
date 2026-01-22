@@ -3,14 +3,20 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Paraspect - Transforming Businesses with Intelligent Solutions</title>
+    <title>Paraspect - Technology Solutions & AI Consulting</title>
     
     <!-- =====================================================
-         CSS STYLES - MAJOR SECTIONS WITH HUMAN-READABLE COMMENTS
+         🎨 QUICK EDIT GUIDE - MOST COMMON CHANGES
+         =====================================================
+         COLORS: Lines 25-35 (CSS Variables)
+         LOGO: Line 85 + Replace HRLOGO2.PNG  
+         HERO IMAGE: Line 155 (background-image)
+         SECTIONS: Home → About → Services → Products → Contact (5 total)
          ===================================================== -->
+    
     <style>
         /* =====================================================
-           GLOBAL RESET & VARIABLES - Edit colors/fonts here
+           🔧 GLOBAL SETTINGS - EDIT BRAND COLORS HERE
            ===================================================== */
         * {
             margin: 0;
@@ -19,44 +25,33 @@
         }
 
         :root {
-            /* COLOR SCHEME - Primary editing area for brand colors */
-            --primary: #5b7c99;        /* Main blue - buttons, accents */
-            --primary-dark: #4a6378;    /* Darker blue - hover states */
-            --secondary: #8ba5be;       /* Light blue - backgrounds */
-            --accent: #b8c9db;          /* Very light blue - subtle */
-            --pastel-blue: #d4e2ed;     /* Pastel backgrounds */
-            --pastel-gray: #e8eef3;     /* Light gray backgrounds */
-            --text: #2c3e50;            /* Dark text - headings */
-            --text-light: #6b7a8f;      /* Light text - body copy */
-            --bg: #ffffff;              /* White background */
-            --bg-alt: #ffffff;          /* Alternate background */
+            /* 👇 CHANGE ALL COLORS HERE - Instantly updates entire site */
+            --primary: #5b7c99;        /* Main blue - buttons, headers, accents */
+            --primary-dark: #4a6378;    /* Hover states, darker elements */
+            --secondary: #8ba5be;       /* Secondary blue backgrounds */
+            --text: #2c3e50;           /* Dark text for headings */
+            --text-light: #6b7a8f;     /* Light gray body text */
+            --bg: #ffffff;             /* Main white background */
+            --bg-alt: #f8fafc;         /* Light gray alternate backgrounds */
         }
 
-        /* BASE BODY STYLES - Controls main font family */
         body {
-            /* FONT FAMILY - Edit here for site-wide font changes */
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, sans-serif;
-            line-height: 1.6;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            line-height: 1.7;
             color: var(--text);
-            overflow-x: hidden;
         }
 
         /* =====================================================
-           NAVIGATION BAR - Fixed top navigation
+           🧭 NAVIGATION - 5 sections only
            ===================================================== */
         nav {
             position: fixed;
             width: 100%;
             background: rgba(255, 255, 255, 0.95);
             backdrop-filter: blur(10px);
-            box-shadow: 0 2px 20px rgba(0,0,0,0.1);
+            box-shadow: 0 2px 20px rgba(0,0,0,0.08);
             z-index: 1000;
             transition: all 0.3s ease;
-        }
-
-        nav.scrolled {
-            /* SCROLL EFFECT - Darker shadow when scrolled */
-            box-shadow: 0 4px 30px rgba(0,0,0,0.15);
         }
 
         .nav-container {
@@ -68,20 +63,17 @@
             padding: 1rem 2rem;
         }
 
-        /* LOGO STYLES - Edit logo size/color here */
         .logo {
-            font-size: 1.7rem;      /* Logo text size */
-            font-weight: 700;       /* Bold logo text */
-            color: var(--primary);  /* Logo color */
+            font-size: 1.7rem;
+            font-weight: 700;
+            color: var(--primary);
             text-decoration: none;
-            color: #4576B9;         /* Override color */
         }
 
         .logo-img {
-            height: 38px;           /* LOGO IMAGE HEIGHT - Edit 24-32px range */
+            height: 38px;       /* 👈 LOGO HEIGHT - Try 32-48px */
             width: auto;
-            margin-right: 6px;
-            object-fit: contain;
+            margin-right: 8px;
             vertical-align: middle;
         }
 
@@ -95,31 +87,17 @@
             color: var(--text);
             text-decoration: none;
             font-weight: 500;
-            transition: color 0.3s ease;
-            position: relative;
+            transition: color 0.3s;
         }
 
-        .nav-links a::after {
-            /* UNDERLINE HOVER EFFECT */
-            content: '';
-            position: absolute;
-            bottom: -5px;
-            left: 0;
-            width: 0;
-            height: 2px;
-            background: var(--primary);
-            transition: width 0.3s ease;
+        .nav-links a:hover {
+            color: var(--primary);
         }
 
-        .nav-links a:hover::after {
-            width: 100%;
-        }
-
-        /* MOBILE HAMBURGER MENU */
         .mobile-toggle {
             display: none;
             flex-direction: column;
-            gap: 5px;
+            gap: 4px;
             cursor: pointer;
         }
 
@@ -127,330 +105,226 @@
             width: 25px;
             height: 3px;
             background: var(--primary);
-            transition: 0.3s;
         }
 
         /* =====================================================
-           HERO SECTION - Main landing section with background image
+           🎬 HERO SECTION (Home)
            ===================================================== */
         .hero {
             height: 100vh;
-            /* BACKGROUND IMAGE - Replace 'BK2.png' with your hero image */
+            /* 👇 REPLACE YOUR HERO IMAGE HERE */
             background-image: url('BK2.png');
             background-size: cover;
-            background-repeat: no-repeat;
-            background-position: center center;
-            background-attachment: scroll;
+            background-position: center;
             display: flex;
             align-items: center;
             justify-content: center;
             text-align: center;
             color: white;
             position: relative;
-            overflow: hidden;
-        }
-
-        /* GRID ANIMATION BACKGROUND EFFECT */
-        .hero::before {
-            content: '';
-            position: absolute;
-            width: 200%;
-            height: 200%;
-            background: radial-gradient(circle, rgba(255,255,255,0.1) 1px, transparent 1px);
-            background-size: 50px 50px;
-            animation: moveGrid 20s linear infinite;
-        }
-
-        @keyframes moveGrid {
-            0% { transform: translate(0, 0); }
-            100% { transform: translate(50px, 50px); }
         }
 
         .hero-content {
-            position: relative;
-            z-index: 1;
-            max-width: 1200px;
+            max-width: 900px;
             padding: 2rem;
-            animation: fadeInUp 1s ease;
         }
 
-        @keyframes fadeInUp {
-            from {
-                opacity: 0;
-                transform: translateY(30px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
-
-        /* HERO TEXT - Edit font sizes here */
         .hero h1 {
-            font-size: 3.9rem;      /* MAIN HEADING SIZE - Mobile: 2rem */
-            margin-bottom: 1rem;
-            font-weight: 800;       /* Extra bold */
+            font-size: 3.5rem;
+            margin-bottom: 1.5rem;
+            font-weight: 800;
+            line-height: 1.2;
         }
 
         .hero p {
-            font-size: 1.3rem;      /* SUBHEADING SIZE - Mobile: 1rem */
-            margin-bottom: 2rem;
+            font-size: 1.3rem;
+            margin-bottom: 2.5rem;
             opacity: 0.95;
         }
 
-        /* CTA BUTTON - Main call-to-action button */
         .cta-button {
             display: inline-block;
-            padding: 1rem 2.5rem;
+            padding: 1.2rem 3rem;
             background: white;
             color: var(--primary);
             text-decoration: none;
             border-radius: 50px;
             font-weight: 600;
-            transition: all 0.3s ease;
+            font-size: 1.1rem;
             box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+            transition: all 0.3s ease;
         }
 
         .cta-button:hover {
             transform: translateY(-3px);
-            box-shadow: 0 15px 40px rgba(0,0,0,0.3);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.3);
         }
 
         /* =====================================================
-           GENERAL SECTION STYLES - All content sections
+           📐 GENERAL SECTIONS
            ===================================================== */
         section {
-            padding: 5rem 2rem;     /* SECTION PADDING - Edit vertical spacing here */
+            padding: 6rem 2rem;
         }
 
         .container {
-            max-width: 1200px;      /* MAX CONTENT WIDTH */
+            max-width: 1200px;
             margin: 0 auto;
         }
 
-        /* SECTION TITLES - All "About Us", "Services", etc headings */
         .section-title {
             text-align: center;
-            font-size: 2.5rem;      /* TITLE FONT SIZE - Mobile: 2rem */
-            margin-bottom: 3rem;
+            font-size: 2.8rem;
+            margin-bottom: 3.5rem;
             color: var(--text);
             position: relative;
         }
 
         .section-title::after {
-            /* UNDERLINE DECORATION */
             content: '';
             display: block;
             width: 80px;
             height: 4px;
             background: var(--primary);
-            margin: 1rem auto;
+            margin: 1rem auto 0;
             border-radius: 2px;
         }
 
         /* =====================================================
-           ABOUT SECTION - Company description + graphic
+           👨‍💼 ABOUT SECTION - UPDATED EXACT TEXT
            ===================================================== */
         .about {
             background: var(--bg-alt);
         }
 
         .about-content {
-            display: grid;
-            grid-template-columns: 1fr 1fr;     /* 2-column layout - Mobile: 1 column */
-            gap: 4rem;
-            align-items: center;
+            max-width: 1000px;
+            margin: 0 auto;
+            text-align: center;
         }
 
-        .about-text p {
-            margin-bottom: 1rem;
+        .about-content p {
+            font-size: 1.15rem;
+            margin-bottom: 2rem;
             color: var(--text-light);
-            font-size: 1.1rem;                  /* BODY TEXT SIZE */
+            line-height: 1.8;
         }
 
-        /* ABOUT SECTION IMAGE PLACEHOLDER */
-        .about-image {
-            width: 100%;
-            height: 400px;                      /* IMAGE HEIGHT */
-            /* UNCOMMENT FOR BACKGROUND IMAGE: background-image: url('DDD.JPG'); */
-            background-position: center;
-            background-size: cover;
-            background-repeat: no-repeat;
-            border-radius: 22px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: black;
-            font-size: 1.5rem;
+        .about-content p:first-of-type {
+            font-size: 1.25rem;
             font-weight: 600;
+            color: var(--text);
+            margin-bottom: 2.5rem;
+        }
+
+        .philosophy {
+            background: white;
+            padding: 3rem;
+            border-radius: 20px;
+            margin: 3rem 0;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.08);
+        }
+
+        .philosophy strong {
+            color: var(--primary);
+            font-size: 1.3rem;
         }
 
         /* =====================================================
-           SERVICES SECTION - 6 service cards grid
+           🛠️ SERVICES SECTION - EXACTLY 4 NEW SERVICES
            ===================================================== */
         .services-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));    /* Responsive 2-3 columns */
-            gap: 2rem;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 2.5rem;
         }
 
         .service-card {
             background: white;
-            padding: 2rem;
-            border-radius: 15px;
-            box-shadow: 0 5px 20px rgba(0,0,0,0.08);
-            transition: all 0.3s ease;
-            cursor: pointer;
+            padding: 2.5rem;
+            border-radius: 20px;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.08);
+            transition: all 0.4s ease;
+            border-top: 4px solid var(--primary);
         }
 
         .service-card:hover {
             transform: translateY(-10px);
-            box-shadow: 0 15px 40px rgba(0,0,0,0.15);
+            box-shadow: 0 25px 60px rgba(0,0,0,0.15);
         }
 
         .service-icon {
-            width: 60px;                        /* ICON SIZE */
-            height: 60px;
-            background: linear-gradient(135deg, var(--primary), var(--secondary));
-            border-radius: 12px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: white;
-            font-size: 1.9rem;
+            font-size: 3rem;
             margin-bottom: 1.5rem;
+            display: block;
         }
 
         .service-card h3 {
-            font-size: 1.7rem;                  /* SERVICE TITLE SIZE */
-            margin-bottom: 1rem;
+            font-size: 1.6rem;
+            margin-bottom: 1.2rem;
             color: var(--text);
         }
 
         .service-card p {
             color: var(--text-light);
+            line-height: 1.7;
         }
 
         /* =====================================================
-           PORTFOLIO/INDUSTRIES SECTION - Image cards with overlay
+           📦 PRODUCTS SECTION - NEW CONTENT
            ===================================================== */
-        .portfolio {
+        .products {
             background: var(--bg-alt);
         }
 
-        .portfolio-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));    /* Responsive 2-3 columns */
-            gap: 2rem;
-        }
-
-        .portfolio-item {
-            position: relative;
-            height: 300px;                      /* CARD HEIGHT */
-            border-radius: 15px;
-            overflow: hidden;
-            cursor: pointer;
-            /* BACKGROUND IMAGES SET INLINE IN HTML */
-            background-size: cover;
-            background-position: center;
-        }
-
-        .portfolio-overlay {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(90, 120, 200, 0.9);    /* OVERLAY COLOR */
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            opacity: 0;
-            transition: opacity 0.3s ease;
-            color: white;
-            padding: 2rem;
+        .products-content {
             text-align: center;
+            max-width: 900px;
+            margin: 0 auto;
         }
 
-        .portfolio-item:hover .portfolio-overlay {
-            opacity: 1;
-        }
-
-        .portfolio-overlay h3 {
-            font-size: 1.8rem;
-            margin-bottom: 0.5rem;
-        }
-
-        /* =====================================================
-           TESTIMONIALS SECTION - Client quotes
-           ===================================================== */
-        .testimonials-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 2rem;
-        }
-
-        .testimonial {
+        .products-highlight {
             background: white;
-            padding: 2rem;
-            border-radius: 15px;
-            box-shadow: 0 5px 20px rgba(0,0,0,0.08);
-            position: relative;
-        }
-
-        .testimonial::before {
-            /* QUOTE MARK DECORATION */
-            content: '"';
-            position: absolute;
-            top: 1rem;
-            left: 1.5rem;
-            font-size: 4rem;
-            color: var(--primary);
-            opacity: 0.2;
-        }
-
-        .testimonial-text {
-            margin-bottom: 1.5rem;
-            color: var(--text-light);
-            font-style: italic;
-        }
-
-        .testimonial-author {
-            display: flex;
-            align-items: center;
-            gap: 1rem;
-        }
-
-        .author-avatar {
-            width: 50px;                        /* AVATAR SIZE */
-            height: 50px;
-            border-radius: 50%;
-            background: var(--primary);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: white;
-            font-weight: 600;
+            padding: 3rem 2.5rem;
+            border-radius: 20px;
+            margin: 3rem 0;
+            box-shadow: 0 15px 50px rgba(0,0,0,0.1);
         }
 
         /* =====================================================
-           CONTACT SECTION - Form + contact info
+           📧 CONTACT SECTION - "Let's Work Together" FORM
            ===================================================== */
-        .contact {
-            background: var(--bg-alt);
-        }
-
         .contact-content {
             display: grid;
-            grid-template-columns: 1fr 1fr;     /* 2-column - Mobile: 1 column */
-            gap: 4rem;
+            grid-template-columns: 1fr 1fr;
+            gap: 5rem;
+            max-width: 1000px;
+            margin: 0 auto;
+        }
+
+        .contact-text {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+
+        .contact-text h2 {
+            font-size: 2.8rem;
+            margin-bottom: 1.5rem;
+            color: var(--text);
+        }
+
+        .contact-text p {
+            font-size: 1.2rem;
+            color: var(--text-light);
+            margin-bottom: 2rem;
+            line-height: 1.7;
         }
 
         .contact-form {
             display: flex;
             flex-direction: column;
-            gap: 1.5rem;
+            gap: 1.8rem;
         }
 
         .form-group {
@@ -459,18 +333,19 @@
         }
 
         .form-group label {
-            margin-bottom: 0.5rem;
+            margin-bottom: 0.7rem;
             font-weight: 600;
             color: var(--text);
+            font-size: 0.95rem;
         }
 
         .form-group input,
         .form-group textarea {
-            padding: 1rem;
-            border: 2px solid #e5e7eb;
-            border-radius: 8px;
+            padding: 1.2rem;
+            border: 2px solid #e2e8f0;
+            border-radius: 12px;
             font-size: 1rem;
-            transition: border-color 0.3s ease;
+            transition: all 0.3s ease;
             font-family: inherit;
         }
 
@@ -478,20 +353,16 @@
         .form-group textarea:focus {
             outline: none;
             border-color: var(--primary);
-        }
-
-        .form-group textarea {
-            resize: vertical;
-            min-height: 150px;
+            box-shadow: 0 0 0 4px rgba(91, 124, 153, 0.1);
         }
 
         .submit-btn {
-            padding: 1rem 2rem;
+            padding: 1.3rem 3rem;
             background: var(--primary);
             color: white;
             border: none;
-            border-radius: 8px;
-            font-size: 1rem;
+            border-radius: 12px;
+            font-size: 1.1rem;
             font-weight: 600;
             cursor: pointer;
             transition: all 0.3s ease;
@@ -502,79 +373,20 @@
             transform: translateY(-2px);
         }
 
-        .contact-info {
-            display: flex;
-            flex-direction: column;
-            gap: 2rem;
-        }
-
-        .contact-item {
-            display: flex;
-            align-items: start;
-            gap: 1rem;
-        }
-
-        .contact-icon {
-            width: 50px;
-            height: 50px;
-            background: var(--primary);
-            border-radius: 10px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: white;
-            font-size: 1.5rem;
-            flex-shrink: 0;
-        }
-
         /* =====================================================
-           FOOTER SECTION - Bottom links + copyright
+           ⚫ FOOTER
            ===================================================== */
         footer {
             background: var(--text);
             color: white;
-            padding: 3rem 2rem 1rem;
-        }
-
-        .footer-content {
-            max-width: 1200px;
-            margin: 0 auto;
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-            gap: 3rem;
-            margin-bottom: 2rem;
-        }
-
-        .footer-section h3 {
-            margin-bottom: 1rem;
-            color: white;
-        }
-
-        .footer-section p,
-        .footer-section a {
-            color: rgba(255,255,255,0.7);
-            text-decoration: none;
-            display: block;
-            margin-bottom: 0.5rem;
-            transition: color 0.3s ease;
-        }
-
-        .footer-section a:hover {
-            color: white;
-        }
-
-        .footer-bottom {
             text-align: center;
-            padding-top: 2rem;
-            border-top: 1px solid rgba(255,255,255,0.1);
-            color: rgba(255,255,255,0.5);
+            padding: 3rem 2rem 2rem;
         }
 
         /* =====================================================
-           RESPONSIVE DESIGN - Mobile/tablet adjustments
+           📱 MOBILE RESPONSIVE
            ===================================================== */
         @media (max-width: 768px) {
-            /* MOBILE NAVIGATION */
             .nav-links {
                 display: none;
                 position: absolute;
@@ -584,7 +396,7 @@
                 background: white;
                 flex-direction: column;
                 padding: 2rem;
-                box-shadow: 0 5px 20px rgba(0,0,0,0.1);
+                box-shadow: 0 10px 30px rgba(0,0,0,0.1);
             }
 
             .nav-links.active {
@@ -595,207 +407,140 @@
                 display: flex;
             }
 
-            /* MOBILE HERO TEXT */
-            .hero h1 {
-                font-size: 2rem;
-            }
-
-            .hero p {
-                font-size: 1rem;
-            }
-
-            /* MOBILE 1-COLUMN LAYOUTS */
-            .about-content,
-            .contact-content {
-                grid-template-columns: 1fr;
-            }
-
-            .section-title {
-                font-size: 2rem;
-            }
+            .hero h1 { font-size: 2.5rem; }
+            .contact-content { grid-template-columns: 1fr; gap: 3rem; }
+            section { padding: 4rem 1.5rem; }
         }
     </style>
 </head>
 
-<!-- =====================================================
-     HTML BODY CONTENT - All sections clearly marked
-     ===================================================== -->
 <body>
     <!-- =====================================================
-         NAVIGATION BAR - Fixed top nav with logo + menu
+         🧭 NAVIGATION - 5 SECTIONS ONLY
          ===================================================== -->
     <nav id="navbar">
         <div class="nav-container">
+            <!-- 👈 REPLACE YOUR LOGO: HRLOGO2.PNG -->
             <a href="#" class="logo">
                 <img src="HRLOGO2.PNG" alt="Paraspect Logo" class="logo-img">
                 <span>PARASPECT</span>
             </a>
-
             <ul class="nav-links" id="navLinks">
                 <li><a href="#home">Home</a></li>
                 <li><a href="#about">About</a></li>
                 <li><a href="#services">Services</a></li>
-                <li><a href="#industries">Industries</a></li>
-                <li><a href="#testimonials">Testimonials</a></li>
+                <li><a href="#products">Products</a></li>
                 <li><a href="#contact">Contact</a></li>
             </ul>
             <div class="mobile-toggle" onclick="toggleMenu()">
-                <span></span>
-                <span></span>
-                <span></span>
+                <span></span><span></span><span></span>
             </div>
         </div>
     </nav>
 
     <!-- =====================================================
-         HERO SECTION - Fullscreen landing with CTA
+         🎬 HOME (Hero)
          ===================================================== -->
     <section class="hero" id="home">
         <div class="hero-content">
-            <h1>TRANSFORMING BUSINESSES WITH INTELLIGENT SOLUTIONS</h1>
-            <p>Empowering your organization with AI-powered innovation, analytics, and industry-specific solutions</p>
-            <a href="#contact" class="cta-button">Start Your Transformation</a>
+            <h1>Transforming Businesses<br>with Intelligent Solutions</h1>
+            <p>Data. Depth. Direction.</p>
+            <a href="#contact" class="cta-button">Let's Work Together</a>
         </div>
     </section>
 
     <!-- =====================================================
-         ABOUT SECTION - Company story + graphic
+         👨‍💼 ABOUT - EXACT TEXT FROM REQUEST
          ===================================================== -->
     <section class="about" id="about">
         <div class="container">
-            <h2 class="section-title">About Us</h2>
+            <h2 class="section-title">About</h2>
             <div class="about-content">
-                <div class="about-text">
-                    <p>Paraspect is a technology solutions company at the forefront of digital transformation and artificial intelligence integration. We specialize in helping organizations unlock the power of their data through intelligent solutions that drive measurable results.</p>
-                    <p>Our mission is guided by three core principles: Data > Depth > Direction. We believe in diving deep into your data to extract meaningful insights, then using that depth of understanding to provide clear direction for your business strategy.</p>
-                    <p>With expertise spanning AI integration, data analytics, and industry-specific solutions, we partner with organizations across healthcare, retail, and beyond to transform operations, enhance customer experiences, and achieve sustainable growth.</p>
+                <p>Paraspect is a technology solutions and consulting firm at the forefront of digital transformation and artificial intelligence. We help organizations unlock the true power of their data and technology—turning complex ideas into measurable business outcomes, no matter the size of the business.</p>
+                
+                <div class="philosophy">
+                    <p><strong>Our work is grounded in a simple philosophy: Data. Depth. Direction.</strong></p>
+                    <p>We go beyond surface-level analysis, diving deep into your data, systems, and context to uncover what truly matters. That depth of understanding enables us to provide clear direction, make better decisions, and drive focused execution.</p>
                 </div>
-                <div class="about-image">
-                    <!-- ADD YOUR GRAPHIC HERE or uncomment background-image in CSS -->
-                    Data > Depth > Direction
-                </div>
+
+                <p>We partner with organizations across the full journey—from strategy and problem definition to program execution and continuous improvement. Our expertise spans AI integration, data platforms, analytics, and industry-specific solutions, supported by strong consulting and program management practices that ensure initiatives move from ideas to impact.</p>
+
+                <p>Across healthcare, retail, and other diverse domains, we help teams transform operations, elevate customer experiences, and build sustainable capabilities for long-term growth.</p>
+
+                <p>At Paraspect, we believe great outcomes come from the combination of clarity of thinking, ownership in delivery, and disciplined execution—not just technology alone.</p>
             </div>
         </div>
     </section>
 
     <!-- =====================================================
-         SERVICES SECTION - 6 AI service cards
+         🛠️ SERVICES - EXACTLY 4 NEW SERVICES
          ===================================================== -->
     <section class="services" id="services">
         <div class="container">
-            <h2 class="section-title">Our Services</h2>
+            <h2 class="section-title">Services</h2>
             <div class="services-grid">
+                <!-- ✅ SERVICE 1 -->
                 <div class="service-card">
-                    <div class="service-icon">🤖</div>
-                    <h3>AI Integration</h3>
-                    <p>Seamlessly integrate artificial intelligence into your existing workflows to enhance efficiency, accuracy, and decision-making capabilities.</p>
+                    <span class="service-icon">🤖</span>
+                    <h3>AI Integration & Strategy</h3>
+                    <p>Identify high-impact AI opportunities and embed intelligent solutions into your technology ecosystem. We define clear use cases, build practical roadmaps, and ensure AI delivers measurable business value.</p>
                 </div>
+
+                <!-- ✅ SERVICE 2 -->
                 <div class="service-card">
-                    <div class="service-icon">🎓</div>
-                    <h3>AI Training & Development</h3>
-                    <p>Empower your team with comprehensive AI training programs and custom model development tailored to your specific business needs.</p>
-                </div>
-                <div class="service-card">
-                    <div class="service-icon">⚡</div>
-                    <h3>Process Automation</h3>
-                    <p>Transform operations with AI-powered automation tools that streamline workflows, reduce costs, and eliminate manual errors.</p>
-                </div>
-                <div class="service-card">
-                    <div class="service-icon">📊</div>
-                    <h3>Data Analytics</h3>
-                    <p>Turn raw data into actionable insights with advanced analytics solutions that drive informed, data-driven decision making.</p>
-                </div>
-                <div class="service-card">
-                    <div class="service-icon">💬</div>
-                    <h3>Chatbot & Virtual Assistants</h3>
-                    <p>Enhance customer engagement with intelligent chatbots and virtual assistants that provide 24/7 support and personalized interactions.</p>
-                </div>
-                <div class="service-card">
-                    <div class="service-icon">🏷️</div>
+                    <span class="service-icon">🏷️</span>
                     <h3>Data Labeling & Annotation</h3>
-                    <p>High-quality data preparation services for AI model training, ensuring accuracy and reliability in your machine learning projects.</p>
+                    <p>Provide high-quality labeled data across text, image, audio, and video to power reliable AI models. Our structured quality controls ensure accuracy, consistency, and scalability.</p>
+                </div>
+
+                <!-- ✅ SERVICE 3 -->
+                <div class="service-card">
+                    <span class="service-icon">📊</span>
+                    <h3>Data Analytics & Insights</h3>
+                    <p>Turn raw data into meaningful dashboards and actionable insights. We help leaders understand what's happening, why it's happening, and what actions will drive better outcomes.</p>
+                </div>
+
+                <!-- ✅ SERVICE 4 -->
+                <div class="service-card">
+                    <span class="service-icon">⚡</span>
+                    <h3>Project & Program Execution</h3>
+                    <p>Bring structure, ownership, and discipline to complex initiatives. From planning to governance to delivery, we ensure critical programs move from ideas to real impact.</p>
                 </div>
             </div>
         </div>
     </section>
 
     <!-- =====================================================
-         INDUSTRIES SECTION - Portfolio-style image cards
+         📦 PRODUCTS - EXACT NEW CONTENT
          ===================================================== -->
-    <section class="portfolio" id="industries">
+    <section class="products" id="products">
         <div class="container">
-            <h2 class="section-title">Industry-Specific Solutions</h2>
-            <div class="portfolio-grid">
-                <div class="portfolio-item" style="background-image: url('pharmacist.jpg');">
-                    <div class="portfolio-overlay">
-                        <h3>🏥 Healthcare</h3>
-                        <p>Patient engagement platforms and healthcare analytics to improve care delivery and operational efficiency</p>
-                    </div>
-                </div>
-                <div class="portfolio-item" style="background-image: url('retail.jpg');">
-                    <div class="portfolio-overlay">
-                        <h3>🛍️ Retail</h3>
-                        <p>Customer personalization engines and supply chain optimization powered by AI and predictive analytics</p>
-                    </div>
-                </div>
-                <div class="portfolio-item" style="background-image: url('girlwithtab.png');">
-                    <div class="portfolio-overlay">
-                        <h3>🏢 Enterprise</h3>
-                        <p>Custom AI solutions tailored to your industry's unique challenges and opportunities for growth</p>
-                    </div>
+            <h2 class="section-title">Products: Building What We Advise</h2>
+            <div class="products-content">
+                <div class="products-highlight">
+                    <p>At Paraspect, we're not just advising on technology—we're actively building our own software and AI products alongside client work. We're early in this journey, learning fast and applying those lessons in real time.</p>
+                    
+                    <p><strong>Our approach is shaped by the realities of product development:</strong> defining the right problem, making clear trade-offs, shipping iteratively, and improving through feedback—not theory alone.</p>
+                    
+                    <p>This builder's mindset strengthens our work with clients, leading to clearer decisions and better execution.</p>
+                    
+                    <p>Our initial products are currently in development, and we'll share updates as they evolve.</p>
                 </div>
             </div>
         </div>
     </section>
 
     <!-- =====================================================
-         TESTIMONIALS SECTION - Client quotes
-         ===================================================== -->
-    <section class="testimonials" id="testimonials">
-        <div class="container">
-            <h2 class="section-title">What Our Clients Say</h2>
-            <div class="testimonials-grid">
-                <div class="testimonial">
-                    <p class="testimonial-text">Paraspect's AI integration transformed our patient engagement process. We've seen a 45% improvement in response times and patient satisfaction has never been higher.</p>
-                    <div class="testimonial-author">
-                        <div class="author-avatar">DR</div>
-                        <div class="author-info">
-                            <h4>Dr. Rachel Martinez</h4>
-                            <p>Chief Medical Officer, HealthFirst</p>
-                        </div>
-                    </div>
-                </div>
-                <div class="testimonial">
-                    <p class="testimonial-text">The data analytics platform helped us identify key customer trends and optimize our supply chain. ROI exceeded our projections within six months.</p>
-                    <div class="testimonial-author">
-                        <div class="author-avatar">JC</div>
-                        <div class="author-info">
-                            <h4>James Chen</h4>
-                            <p>VP Operations, RetailPro</p>
-                        </div>
-                    </div>
-                </div>
-                <div class="testimonial">
-                    <p class="testimonial-text">Professional, innovative, and results-driven. Paraspect's team understood our challenges and delivered solutions that truly work at scale.</p>
-                    <div class="testimonial-author">
-                        <div class="author-avatar">SK</div>
-                        <div class="author-info">
-                            <h4>Sarah Kumar</h4>
-                            <p>CTO, TechVentures Inc</p>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- =====================================================
-         CONTACT SECTION - Form + contact details
+         📧 CONTACT - "Let's Work Together" 4-FIELD FORM
          ===================================================== -->
     <section class="contact" id="contact">
         <div class="container">
-            <h2 class="section-title">Get In Touch</h2>
             <div class="contact-content">
+                <div class="contact-text">
+                    <h2>Let's Work Together</h2>
+                    <p>Let's discuss how your software or AI initiative can deliver measurable business outcomes.</p>
+                </div>
+                
                 <form class="contact-form" onsubmit="handleSubmit(event)">
                     <div class="form-group">
                         <label for="name">Name</label>
@@ -806,137 +551,61 @@
                         <input type="email" id="email" required>
                     </div>
                     <div class="form-group">
+                        <label for="organization">Organization</label>
+                        <input type="text" id="organization" required>
+                    </div>
+                    <div class="form-group">
                         <label for="message">Message</label>
-                        <textarea id="message" required></textarea>
+                        <textarea id="message" rows="5" required></textarea>
                     </div>
                     <button type="submit" class="submit-btn">Send Message</button>
                 </form>
-                <div class="contact-info">
-                    <div class="contact-item">
-                        <div class="contact-icon">📧</div>
-                        <div class="contact-details">
-                            <h3>Email</h3>
-                            <p>connect@paraspect.com</p>
-                        </div>
-                    </div>
-                    <div class="contact-item">
-                        <div class="contact-icon">📞</div>
-                        <div class="contact-details">
-                            <h3>Phone</h3>
-                            <p>+91 (020) 1234-5678</p>
-                        </div>
-                    </div>
-                    <div class="contact-item">
-                        <div class="contact-icon">📍</div>
-                        <div class="contact-details">
-                            <h3>Location</h3>
-                            <p>Pune, Maharashtra<br>India</p>
-                        </div>
-                    </div>
-                </div>
             </div>
         </div>
     </section>
 
     <!-- =====================================================
-         FOOTER SECTION - Links + copyright
+         ⚫ FOOTER
          ===================================================== -->
     <footer>
-        <div class="footer-content">
-            <div class="footer-section">
-                <h3>PARASPECT</h3>
-                <p>Transforming businesses through innovative solutions and expert guidance.</p>
-            </div>
-            <div class="footer-section">
-                <h3>Quick Links</h3>
-                <a href="#about">About</a>
-                <a href="#services">Services</a>
-                <a href="#portfolio">Portfolio</a>
-                <a href="#contact">Contact</a>
-            </div>
-            <div class="footer-section">
-                <h3>Services</h3>
-                <a href="#">Consulting</a>
-                <a href="#">Digital Solutions</a>
-                <a href="#">Analytics</a>
-                <a href="#">Marketing</a>
-            </div>
-            <div class="footer-section">
-                <h3>Connect</h3>
-                <a href="#">LinkedIn</a>
-                <a href="#">Twitter</a>
-                <a href="#">Facebook</a>
-                <a href="#">Instagram</a>
-            </div>
-        </div>
-        <div class="footer-bottom">
-            <p>&copy; 2025 PARASPECT. All rights reserved.</p>
+        <div class="container">
+            <p>&copy; 2026 Paraspect. All rights reserved. | Pune, India</p>
         </div>
     </footer>
 
     <!-- =====================================================
-         JAVASCRIPT - Interactive functionality
+         ⚙️ JAVASCRIPT
          ===================================================== -->
     <script>
-        // MOBILE MENU TOGGLE
         function toggleMenu() {
-            const navLinks = document.getElementById('navLinks');
-            navLinks.classList.toggle('active');
+            document.getElementById('navLinks').classList.toggle('active');
         }
 
-        // SMOOTH SCROLLING FOR NAV LINKS
         document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-            anchor.addEventListener('click', function (e) {
+            anchor.addEventListener('click', function(e) {
                 e.preventDefault();
-                const target = document.querySelector(this.getAttribute('href'));
-                if (target) {
-                    target.scrollIntoView({ behavior: 'smooth', block: 'start' });
-                    document.getElementById('navLinks').classList.remove('active');
-                }
+                document.querySelector(this.getAttribute('href')).scrollIntoView({
+                    behavior: 'smooth'
+                });
+                document.getElementById('navLinks').classList.remove('active');
             });
         });
 
-        // NAVBAR SCROLL EFFECT
-        window.addEventListener('scroll', () => {
-            const navbar = document.getElementById('navbar');
-            if (window.scrollY > 50) {
-                navbar.classList.add('scrolled');
-            } else {
-                navbar.classList.remove('scrolled');
-            }
-        });
-
-        // CONTACT FORM HANDLER
         function handleSubmit(e) {
             e.preventDefault();
-            const name = document.getElementById('name').value;
-            const email = document.getElementById('email').value;
-            const message = document.getElementById('message').value;
-            
-            alert(`Thank you for your message, ${name}! We'll get back to you soon at ${email}.`);
+            const formData = {
+                name: document.getElementById('name').value,
+                email: document.getElementById('email').value,
+                organization: document.getElementById('organization').value,
+                message: document.getElementById('message').value
+            };
+            alert(`Thank you, ${formData.name}! We'll reach out from contact@paraspect.com soon.`);
             e.target.reset();
         }
 
-        // SCROLL ANIMATIONS - Fade in on scroll
-        const observerOptions = {
-            threshold: 0.1,
-            rootMargin: '0px 0px -100px 0px'
-        };
-
-        const observer = new IntersectionObserver((entries) => {
-            entries.forEach(entry => {
-                if (entry.isIntersecting) {
-                    entry.target.style.opacity = '1';
-                    entry.target.style.transform = 'translateY(0)';
-                }
-            });
-        }, observerOptions);
-
-        document.querySelectorAll('.service-card, .portfolio-item, .testimonial').forEach(el => {
-            el.style.opacity = '0';
-            el.style.transform = 'translateY(30px)';
-            el.style.transition = 'all 0.6s ease';
-            observer.observe(el);
+        window.addEventListener('scroll', () => {
+            document.getElementById('navbar').style.background = 
+                window.scrollY > 50 ? 'rgba(255,255,255,0.98)' : 'rgba(255,255,255,0.95)';
         });
     </script>
 </body>
