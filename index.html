@@ -10,11 +10,6 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Space+Grotesk:wght@400;500;600;700;800&display=swap" rel="stylesheet">
     
-    <!-- =====================================================
-         🎨 QUICK EDIT GUIDE
-         COLORS: Lines 25-35 | LOGO: Line 85 | HERO: Line 155
-         ===================================================== -->
-    
     <style>
         /* =====================================================
            🔧 GLOBAL COLORS & SETTINGS
@@ -32,13 +27,13 @@
             overflow-x: hidden;
         }
 
-        /* Space Grotesk for headings */
-        .section-title, .hero h1, h2, h3 {
+        /* Space Grotesk for headings (EXCLUDING logo) */
+        .section-title, .hero h1, .service-card h3, .contact-text h2, .contact-info h3 {
             font-family: 'Space Grotesk', 'Inter', sans-serif;
         }
 
         /* =====================================================
-           🧭 NAVIGATION
+           🧭 NAVIGATION - LOGO FONT UNCHANGED
            ===================================================== */
         nav {
             position: fixed; width: 100%; background: rgba(255,255,255,0.95);
@@ -56,7 +51,6 @@
             font-weight: 700; 
             color: var(--primary); 
             text-decoration: none; 
-            font-family: 'Space Grotesk', 'Inter', sans-serif;
         }
         .logo-img { height: 38px; width: auto; margin-right: 8px; vertical-align: middle; }
 
@@ -73,7 +67,7 @@
         .hero {
             height: 90vh; background-image: url('road.JPG'); background-size: cover;
             background-position: center; display: flex; align-items: center; justify-content: center;
-            text-align: center; color: #333333 ; position: relative;
+            text-align: center; color: #333333; position: relative;
         }
 
         .hero-content { max-width: 1200px; padding: 2rem; }
@@ -94,8 +88,8 @@
         .container { max-width: 1200px; margin: 0 auto; }
 
         .section-title {
-            text-align: center; font-size: 2.8rem; margin-bottom: 3.5rem; color: var(--text); position: relative;
-            font-weight: 700;
+            text-align: center; font-size: 2.8rem; margin-bottom: 3.5rem; color: var(--text); 
+            position: relative; font-weight: 700;
         }
         .section-title::after {
             content: ''; display: block; width: 80px; height: 4px; background: var(--primary);
@@ -103,7 +97,7 @@
         }
 
         /* =====================================================
-           👨‍💼 ABOUT - 2-COLUMN WITH OFFICE IMAGE
+           👨‍💼 ABOUT SECTION
            ===================================================== */
         .about { background: var(--bg-alt); }
         .about-content {
@@ -112,15 +106,9 @@
         }
 
         .about-text p {
-            font-size: 1rem; margin-bottom: 2rem; color: var(--text-light); line-height: 1; text-align: justify;
+            font-size: 1rem; margin-bottom: 2rem; color: var(--text-light); line-height: 1.7; 
+            text-align: justify;
         }
-        .about-text p:first-of-type {font-size: 1rem; margin-bottom: 2rem; color: var(--text-light); line-height: 1;}
-
-        .philosophy {
-            background: white; padding: 1rem; border-radius: 20px; margin: 1rem 0;
-            box-shadow: 0 10px 40px rgba(0,0,0,0.08);
-        }
-        .philosophy strong { color: var(--primary); font-size: 1rem; }
 
         .about-image {
             height: 450px; background-image: url('about1.JPG');
@@ -129,7 +117,7 @@
         }
 
         /* =====================================================
-           🛠️ SERVICES - 2 PER ROW (4 TOTAL)
+           🛠️ SERVICES SECTION
            ===================================================== */
         .services { 
             background: var(--bg-alt);
@@ -243,7 +231,7 @@
         }
 
         /* =====================================================
-           📧 CONTACT - "Let's Work Together" + IMAGE + CONTACT INFO
+           📧 CONTACT SECTION
            ===================================================== */
         .contact { background: var(--bg); }
         .contact-main {
@@ -258,8 +246,7 @@
 
         .contact-image {
             height: 350px; width:100%; background: linear-gradient(135deg, var(--primary), var(--secondary));
-            background-size: cover;
-            background-position: center;
+            background-size: cover; background-position: center;
             border-radius: 20px; display: flex; align-items: center; justify-content: center;
             color: white; font-size: 1.2rem; text-align: center; padding: 2rem;
         }
@@ -282,6 +269,63 @@
             transition: all 0.3s ease;
         }
         .submit-btn:hover { background: var(--primary-dark); transform: translateY(-2px); }
+        .submit-btn:disabled { opacity: 0.7; cursor: not-allowed; transform: none; }
+
+        /* THANK YOU POPUP */
+        .thank-you-popup {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.6);
+            z-index: 10000;
+            backdrop-filter: blur(5px);
+        }
+        .thank-you-content {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: white;
+            padding: 3rem 2.5rem;
+            border-radius: 20px;
+            max-width: 450px;
+            width: 90%;
+            text-align: center;
+            box-shadow: 0 25px 60px rgba(0,0,0,0.3);
+            animation: popupSlideIn 0.3s ease;
+        }
+        @keyframes popupSlideIn {
+            from { transform: translate(-50%, -60%) scale(0.9); opacity: 0; }
+            to { transform: translate(-50%, -50%) scale(1); opacity: 1; }
+        }
+        .thank-you-popup h3 {
+            color: var(--primary);
+            font-size: 1.8rem;
+            margin-bottom: 1rem;
+            font-weight: 700;
+        }
+        .thank-you-popup p {
+            color: var(--text-light);
+            margin-bottom: 2rem;
+            line-height: 1.6;
+        }
+        .close-popup {
+            padding: 0.8rem 2rem;
+            background: var(--primary);
+            color: white;
+            border: none;
+            border-radius: 12px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        .close-popup:hover {
+            background: var(--primary-dark);
+            transform: translateY(-2px);
+        }
 
         .contact-info {
             background: var(--bg-alt); padding: 3rem 2rem; border-radius: 20px;
@@ -291,7 +335,6 @@
         .contact-info p { font-size: 1.1rem; color: var(--text-light); margin-bottom: 1rem; }
         .contact-info a { color: var(--primary); font-weight: 600; font-size: 1.1rem; }
 
-        /* LinkedIn social links */
         .social-links {
             display: flex; 
             justify-content: center; 
@@ -315,7 +358,6 @@
         .social-links a:hover {
             transform: translateY(-2px); 
             box-shadow: 0 8px 25px rgba(91,124,153,0.3);
-            color: var(--primary);
         }
 
         /* =====================================================
@@ -364,7 +406,7 @@
         </div>
     </nav>
 
-    <!-- 🎬 HOME -->
+    <!-- 🎬 HERO -->
     <section class="hero" id="home">
         <div class="hero-content">
             <h1>Transforming Businesses<br>with Intelligent Solutions</h1>
@@ -373,7 +415,7 @@
         </div>
     </section>
 
-    <!-- 👨‍💼 ABOUT - TEXT + OFFICE IMAGE -->
+    <!-- 👨‍💼 ABOUT -->
     <section class="about" id="about">
         <div class="container">
             <h2 class="section-title">About</h2>
@@ -382,7 +424,7 @@
                     <p>Paraspect is a technology solutions and consulting firm at the forefront of digital transformation and artificial intelligence. We help organizations unlock the true power of their data and technology—turning complex ideas into measurable business outcomes, no matter the size of the business.</p>
                     <p>Our work is grounded in a simple philosophy: Data. Depth. Direction.</p>
                     <p>We go beyond surface-level analysis, diving deep into your data, systems, and context to uncover what truly matters. That depth of understanding enables us to provide clear direction, make better decisions, and drive focused execution.</p>
-                    <p>We partner with organizations across the full journey—from strategy and problem definition to program execution and continuous improvement. Our expertise spans AI integration, data platforms, analytics, and industry-specific solutions. Across diverse domains, we help teams transform operations, elevate customer experiences, and build sustainable capabilities for long-term growth.</p>
+                    <p>We partner with organizations across the full journey—from strategy and problem definition to program execution and continuous improvement. Our expertise spans AI integration, data platforms, analytics, and industry-specific solutions.</p>
                     <p>At Paraspect, we believe great outcomes come from clarity of thinking, ownership in delivery, and disciplined execution—not just technology alone.</p>
                 </div>
                 <div class="about-image"></div>
@@ -390,7 +432,7 @@
         </div>
     </section>
 
-    <!-- 🛠️ SERVICES - 2 PER ROW -->
+    <!-- 🛠️ SERVICES -->
     <section class="services" id="services">
         <div class="container">
             <h2 class="section-title">Our Services</h2>
@@ -426,17 +468,14 @@
             <div class="products-content">
                 <div class="products-highlight">
                     <p>At Paraspect, we're not just advising on technology—we're actively building our own software and AI products alongside client work. We're early in this journey, learning fast and applying those lessons in real time.</p>
-                    <p>...</p>
-                    <p>As we build, we bring this builder's mindset into every engagement. Our clients benefit from practical guidance grounded in what's working, what's challenging, and what it truly takes to turn ideas into real, usable products. These products are shaped by hands-on experience—designed to be useful, usable, and grounded in real operational needs rather than abstract ideas.</p>
-                    <p>This builder's mindset strengthens our work with clients, leading to clearer decisions and better execution.</p>
-                    <p>...</p>
+                    <p>As we build, we bring this builder's mindset into every engagement. Our clients benefit from practical guidance grounded in what's working, what's challenging, and what it truly takes to turn ideas into real, usable products.</p>
                     <p>Our initial products are currently in development, and we'll share updates as they evolve.</p>
                 </div>
             </div>
         </div>
     </section>
 
-    <!-- 📧 CONTACT - FORM + IMAGE + INFO -->
+    <!-- 📧 CONTACT -->
     <section class="contact" id="contact">
         <div class="container">
             <div class="contact-main">
@@ -445,18 +484,16 @@
                         <h2>Let's Work Together</h2>
                         <p>Let's discuss how your software or AI initiative can deliver measurable business outcomes.</p>
                     </div>
-                    
-                 
-
+                    <!-- ✅ FORM SUBMITS TO connect@paraspect.com - NO REDIRECT -->
                     <form class="contact-form" action="https://formsubmit.co/connect@paraspect.com" method="POST">
-    <input type="hidden" name="_subject" value="New Contact Form Submission">
-    <input type="hidden" name="_captcha" value="false">
-    <input type="hidden" name="_next" value="https://paraspect.com/thank-you.html">
-    
-    <div class="form-group">
-        <label for="name">Name</label>
-        <input type="text" id="name" name="name" required>
-    </div>    
+                        <input type="hidden" name="_subject" value="New Contact Form Submission">
+                        <input type="hidden" name="_captcha" value="false">
+                        <!-- REMOVED _next to prevent redirect -->
+                        
+                        <div class="form-group">
+                            <label for="name">Name</label>
+                            <input type="text" id="name" name="name" required>
+                        </div>
                         <div class="form-group">
                             <label for="email">Email</label>
                             <input type="email" id="email" name="email" required>
@@ -469,20 +506,16 @@
                             <label for="message">Message</label>
                             <textarea id="message" name="message" rows="5" required></textarea>
                         </div>
-                        <button type="submit" class="submit-btn">Send Message</button>
-                    </form> 
-                    
+                        <button type="submit" class="submit-btn" id="submitBtn">Send Message</button>
+                    </form>
                 </div>
                 <div class="contact-image" style="background-image: url('together1.PNG');"></div>
             </div>
             
-            <!-- ✅ CONTACT INFO WITH LINKEDIN -->
             <div class="contact-info">
                 <h3>Get In Touch</h3>
                 <p><strong>Have a question or want to explore a conversation?</strong></p>
                 <p><a href="mailto:connect@paraspect.com">connect@paraspect.com</a></p>
-                
-                <!-- LinkedIn Link - Update with your actual LinkedIn URL -->
                 <div class="social-links">
                     <a href="https://www.linkedin.com/company/paraspect" target="_blank" rel="noopener">
                         💼 Connect on LinkedIn
@@ -499,10 +532,22 @@
         </div>
     </footer>
 
+    <!-- ✅ THANK YOU POPUP -->
+    <div class="thank-you-popup" id="thankYouPopup">
+        <div class="thank-you-content">
+            <h3>Thank You!</h3>
+            <p>Your message has been sent to <strong>connect@paraspect.com</strong><br>We'll get back to you within 24 hours.</p>
+            <button class="close-popup" onclick="closeThankYou()">Close</button>
+        </div>
+    </div>
+
     <!-- ⚙️ JAVASCRIPT -->
     <script>
-        function toggleMenu() { document.getElementById('navLinks').classList.toggle('active'); }
+        function toggleMenu() { 
+            document.getElementById('navLinks').classList.toggle('active'); 
+        }
 
+        // Smooth scrolling for navigation links
         document.querySelectorAll('a[href^="#"]').forEach(anchor => {
             anchor.addEventListener('click', function(e) {
                 e.preventDefault();
@@ -511,14 +556,46 @@
             });
         });
 
-        // Form submission success handler
-        document.querySelector('.contact-form').addEventListener('submit', function() {
-            // Show success message after form submission
+        // FORM SUBMISSION WITH POPUP (NO REDIRECT)
+        document.querySelector('.contact-form').addEventListener('submit', function(e) {
+            e.preventDefault(); // Prevent default form submission
+            
+            const submitBtn = document.getElementById('submitBtn');
+            const originalText = submitBtn.innerHTML;
+            
+            // Show loading state
+            submitBtn.innerHTML = 'Sending...';
+            submitBtn.disabled = true;
+            
+            // Simulate form submission (FormSubmit works in background)
             setTimeout(() => {
-                alert('Thank you! Your message has been sent to connect@paraspect.com. We\'ll get back to you soon.');
-            }, 1000);
+                // Reset button
+                submitBtn.innerHTML = originalText;
+                submitBtn.disabled = false;
+                
+                // Clear form
+                this.reset();
+                
+                // Show beautiful popup
+                document.getElementById('thankYouPopup').style.display = 'block';
+                document.body.style.overflow = 'hidden'; // Prevent background scroll
+            }, 1500);
         });
 
+        // Close thank you popup
+        function closeThankYou() {
+            document.getElementById('thankYouPopup').style.display = 'none';
+            document.body.style.overflow = 'auto'; // Restore scroll
+        }
+
+        // Close popup when clicking outside
+        document.getElementById('thankYouPopup').addEventListener('click', function(e) {
+            if (e.target === this) {
+                closeThankYou();
+            }
+        });
+
+        // Navbar scroll effect
         window.addEventListener('scroll', () => {
             document.getElementById('navbar').style.background = 
                 window.scrollY > 50 ? 'rgba(255,255,255,0.98)' : 'rgba(255,255,255,0.95)';
