@@ -10,6 +10,11 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Space+Grotesk:wght@400;500;600;700;800&display=swap" rel="stylesheet">
     
+    <!-- =====================================================
+         🎨 QUICK EDIT GUIDE
+         COLORS: Lines 25-35 | LOGO: Line 85 | HERO: Line 155
+         ===================================================== -->
+    
     <style>
         /* =====================================================
            🔧 GLOBAL COLORS & SETTINGS
@@ -27,13 +32,13 @@
             overflow-x: hidden;
         }
 
-        /* Space Grotesk for headings ONLY (logo excluded) */
-        .section-title, .hero h1, .service-card h3, .contact-text h2, .contact-info h3, .products-highlight h2 {
+        /* Space Grotesk for headings */
+        .section-title, .hero h1, h2, h3 {
             font-family: 'Space Grotesk', 'Inter', sans-serif;
         }
 
         /* =====================================================
-           🧭 NAVIGATION - LOGO FONT UNCHANGED
+           🧭 NAVIGATION
            ===================================================== */
         nav {
             position: fixed; width: 100%; background: rgba(255,255,255,0.95);
@@ -46,13 +51,12 @@
             justify-content: space-between; align-items: center; padding: 1rem 2rem;
         }
 
-        /* LOGO FONT RESTORED TO ORIGINAL */
         .logo { 
             font-size: 1.7rem; 
             font-weight: 700; 
             color: var(--primary); 
             text-decoration: none; 
-            /* NO Space Grotesk - uses body font (Inter + system fallback) */
+            font-family: 'Space Grotesk', 'Inter', sans-serif;
         }
         .logo-img { height: 38px; width: auto; margin-right: 8px; vertical-align: middle; }
 
@@ -98,7 +102,9 @@
             margin: 1rem auto 0; border-radius: 2px;
         }
 
-        /* [Rest of CSS remains exactly the same as previous version] */
+        /* =====================================================
+           👨‍💼 ABOUT - 2-COLUMN WITH OFFICE IMAGE
+           ===================================================== */
         .about { background: var(--bg-alt); }
         .about-content {
             display: grid; grid-template-columns: 1fr 1fr; gap: 4rem; align-items: center;
@@ -122,6 +128,9 @@
             box-shadow: 0 15px 50px rgba(0,0,0,0.1);
         }
 
+        /* =====================================================
+           🛠️ SERVICES - 2 PER ROW (4 TOTAL)
+           ===================================================== */
         .services { 
             background: var(--bg-alt);
             position: relative;
@@ -222,6 +231,9 @@
             font-size: 1.05rem;
         }
 
+        /* =====================================================
+           📦 PRODUCTS SECTION
+           ===================================================== */
         .products { background: var(--bg-alt); }
         .products-content { text-align: center; max-width: 900px; margin: 0 auto; }
 
@@ -230,6 +242,9 @@
             box-shadow: 0 15px 50px rgba(0,0,0,0.1);
         }
 
+        /* =====================================================
+           📧 CONTACT - "Let's Work Together" + IMAGE + CONTACT INFO
+           ===================================================== */
         .contact { background: var(--bg); }
         .contact-main {
             display: grid; grid-template-columns: 1fr 400px; gap: 4rem; max-width: 1400px; margin: 0 auto 4rem auto;
@@ -242,7 +257,8 @@
         .contact-text p { font-size: 1.2rem; color: var(--text-light); margin-bottom: 2rem; line-height: 1.7; }
 
         .contact-image {
-            height: 350px; width:100%; background-size: cover;
+            height: 350px; width:100%; background: linear-gradient(135deg, var(--primary), var(--secondary));
+            background-size: cover;
             background-position: center;
             border-radius: 20px; display: flex; align-items: center; justify-content: center;
             color: white; font-size: 1.2rem; text-align: center; padding: 2rem;
@@ -275,6 +291,7 @@
         .contact-info p { font-size: 1.1rem; color: var(--text-light); margin-bottom: 1rem; }
         .contact-info a { color: var(--primary); font-weight: 600; font-size: 1.1rem; }
 
+        /* LinkedIn social links */
         .social-links {
             display: flex; 
             justify-content: center; 
@@ -301,10 +318,16 @@
             color: var(--primary);
         }
 
+        /* =====================================================
+           ⚫ FOOTER
+           ===================================================== */
         footer {
             background: var(--text); color: white; text-align: center; padding: 3rem 2rem 2rem;
         }
 
+        /* =====================================================
+           📱 MOBILE RESPONSIVE
+           ===================================================== */
         @media (max-width: 768px) {
             .nav-links {
                 display: none; position: absolute; top: 100%; left: 0; width: 100%;
@@ -341,7 +364,6 @@
         </div>
     </nav>
 
-    <!-- Rest of HTML remains IDENTICAL to previous version -->
     <!-- 🎬 HOME -->
     <section class="hero" id="home">
         <div class="hero-content">
@@ -351,7 +373,7 @@
         </div>
     </section>
 
-    <!-- 👨‍💼 ABOUT -->
+    <!-- 👨‍💼 ABOUT - TEXT + OFFICE IMAGE -->
     <section class="about" id="about">
         <div class="container">
             <h2 class="section-title">About</h2>
@@ -359,4 +381,140 @@
                 <div class="about-text">
                     <p>Paraspect is a technology solutions and consulting firm at the forefront of digital transformation and artificial intelligence. We help organizations unlock the true power of their data and technology—turning complex ideas into measurable business outcomes, no matter the size of the business.</p>
                     <p>Our work is grounded in a simple philosophy: Data. Depth. Direction.</p>
-                    <p>We go beyond surface-level analysis, diving deep into your data,
+                    <p>We go beyond surface-level analysis, diving deep into your data, systems, and context to uncover what truly matters. That depth of understanding enables us to provide clear direction, make better decisions, and drive focused execution.</p>
+                    <p>We partner with organizations across the full journey—from strategy and problem definition to program execution and continuous improvement. Our expertise spans AI integration, data platforms, analytics, and industry-specific solutions. Across diverse domains, we help teams transform operations, elevate customer experiences, and build sustainable capabilities for long-term growth.</p>
+                    <p>At Paraspect, we believe great outcomes come from clarity of thinking, ownership in delivery, and disciplined execution—not just technology alone.</p>
+                </div>
+                <div class="about-image"></div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 🛠️ SERVICES - 2 PER ROW -->
+    <section class="services" id="services">
+        <div class="container">
+            <h2 class="section-title">Our Services</h2>
+            <div class="services-grid">
+                <div class="service-card">
+                    <span class="service-icon">🤖</span>
+                    <h3>AI Integration & Strategy</h3>
+                    <p>Identify high-impact AI opportunities and embed intelligent solutions into your technology ecosystem. We define clear use cases, build practical roadmaps, and ensure AI delivers measurable business value.</p>
+                </div>
+                <div class="service-card">
+                    <span class="service-icon">🏷️</span>
+                    <h3>Data Labeling & Annotation</h3>
+                    <p>Provide high-quality labeled data across text, image, audio, and video to power reliable AI models. Our structured quality controls ensure accuracy, consistency, and scalability.</p>
+                </div>
+                <div class="service-card">
+                    <span class="service-icon">📊</span>
+                    <h3>Data Analytics & Insights</h3>
+                    <p>Turn raw data into meaningful dashboards and actionable insights. We help leaders understand what's happening, why it's happening, and what actions will drive better outcomes.</p>
+                </div>
+                <div class="service-card">
+                    <span class="service-icon">⚡</span>
+                    <h3>Project & Program Execution</h3>
+                    <p>Bring structure, ownership, and discipline to complex initiatives. From planning to governance to delivery, we ensure critical programs move from ideas to real impact.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 📦 PRODUCTS -->
+    <section class="products" id="products">
+        <div class="container">
+            <h2 class="section-title">Our Products: Building What We Advise</h2>
+            <div class="products-content">
+                <div class="products-highlight">
+                    <p>At Paraspect, we're not just advising on technology—we're actively building our own software and AI products alongside client work. We're early in this journey, learning fast and applying those lessons in real time.</p>
+                    <p>...</p>
+                    <p>As we build, we bring this builder's mindset into every engagement. Our clients benefit from practical guidance grounded in what's working, what's challenging, and what it truly takes to turn ideas into real, usable products. These products are shaped by hands-on experience—designed to be useful, usable, and grounded in real operational needs rather than abstract ideas.</p>
+                    <p>This builder's mindset strengthens our work with clients, leading to clearer decisions and better execution.</p>
+                    <p>...</p>
+                    <p>Our initial products are currently in development, and we'll share updates as they evolve.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 📧 CONTACT - FORM + IMAGE + INFO -->
+    <section class="contact" id="contact">
+        <div class="container">
+            <div class="contact-main">
+                <div class="contact-content">
+                    <div class="contact-text">
+                        <h2>Let's Work Together</h2>
+                        <p>Let's discuss how your software or AI initiative can deliver measurable business outcomes.</p>
+                    </div>
+                    <form class="contact-form" action="https://formspree.io/f/YOUR_FORMSPREE_ID" method="POST">
+                        <div class="form-group">
+                            <label for="name">Name</label>
+                            <input type="text" id="name" name="name" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="email">Email</label>
+                            <input type="email" id="email" name="email" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="organization">Organization</label>
+                            <input type="text" id="organization" name="organization" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="message">Message</label>
+                            <textarea id="message" name="message" rows="5" required></textarea>
+                        </div>
+                        <button type="submit" class="submit-btn">Send Message</button>
+                    </form>
+                </div>
+                <div class="contact-image" style="background-image: url('together1.PNG');"></div>
+            </div>
+            
+            <!-- ✅ CONTACT INFO WITH LINKEDIN -->
+            <div class="contact-info">
+                <h3>Get In Touch</h3>
+                <p><strong>Have a question or want to explore a conversation?</strong></p>
+                <p><a href="mailto:connect@paraspect.com">connect@paraspect.com</a></p>
+                
+                <!-- LinkedIn Link - Update with your actual LinkedIn URL -->
+                <div class="social-links">
+                    <a href="https://www.linkedin.com/company/paraspect" target="_blank" rel="noopener">
+                        💼 Connect on LinkedIn
+                    </a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ⚫ FOOTER -->
+    <footer>
+        <div class="container">
+            <p>&copy; 2026 Paraspect. All rights reserved. | Paraspect Solutions OPC Private Limited | Pune, India</p>
+        </div>
+    </footer>
+
+    <!-- ⚙️ JAVASCRIPT -->
+    <script>
+        function toggleMenu() { document.getElementById('navLinks').classList.toggle('active'); }
+
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function(e) {
+                e.preventDefault();
+                document.querySelector(this.getAttribute('href')).scrollIntoView({ behavior: 'smooth' });
+                document.getElementById('navLinks').classList.remove('active');
+            });
+        });
+
+        // Form submission success handler
+        document.querySelector('.contact-form').addEventListener('submit', function() {
+            // Show success message after form submission
+            setTimeout(() => {
+                alert('Thank you! Your message has been sent to connect@paraspect.com. We\'ll get back to you soon.');
+            }, 1000);
+        });
+
+        window.addEventListener('scroll', () => {
+            document.getElementById('navbar').style.background = 
+                window.scrollY > 50 ? 'rgba(255,255,255,0.98)' : 'rgba(255,255,255,0.95)';
+        });
+    </script>
+</body>
+</html>
