@@ -1,0 +1,854 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Paramap Delay Impact</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<style>
+:root{padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+body{margin:0}
+[hidden]{display:none!important}
+/* Layout: a project-controls report. Summary band, then one section per question management asks, then the engine behind it. */
+:root{
+  --bg:#f4f6f8; --surface:#ffffff; --surface-2:#eef1f4;
+  --ink:#10161d; --ink-2:#4a5361; --muted:#7f8794;
+  --grid:#e3e7ec; --axis:#c3c9d1; --line:rgba(16,22,29,.10);
+  --accent:#23407a;
+  --s-base:#2a78d6; --s-rev:#eb6834; --s-act:#1baf7a;
+  --good:#0ca30c; --warn:#fab219; --serious:#ec835a; --crit:#d03b3b;
+  --good-ink:#006300; --crit-ink:#b3261e;
+  --display:"Bricolage Grotesque", "Segoe UI", system-ui, sans-serif;
+  --body:"IBM Plex Sans", system-ui, -apple-system, "Segoe UI", sans-serif;
+  --mono:"IBM Plex Mono", ui-monospace, "SFMono-Regular", Menlo, monospace;
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --bg:#0e1115; --surface:#161a20; --surface-2:#1d222a;
+    --ink:#eef0f3; --ink-2:#b8bfc9; --muted:#8a919c;
+    --grid:#262c34; --axis:#3a414b; --line:rgba(255,255,255,.10);
+    --accent:#9db6ec;
+    --s-base:#3987e5; --s-rev:#d95926; --s-act:#199e70;
+    --good-ink:#3cc23c; --crit-ink:#f07b7b;
+    color-scheme:dark;
+  }
+}
+:root[data-theme="dark"]{
+  --bg:#0e1115; --surface:#161a20; --surface-2:#1d222a;
+  --ink:#eef0f3; --ink-2:#b8bfc9; --muted:#8a919c;
+  --grid:#262c34; --axis:#3a414b; --line:rgba(255,255,255,.10);
+  --accent:#9db6ec;
+  --s-base:#3987e5; --s-rev:#d95926; --s-act:#199e70;
+  --good-ink:#3cc23c; --crit-ink:#f07b7b;
+  color-scheme:dark;
+}
+*{box-sizing:border-box}
+body{background:var(--bg);color:var(--ink);font-family:var(--body);font-size:15px;line-height:1.55;
+  padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));padding-block:0 64px}
+.wrap{max-width:1180px;margin:0 auto}
+h1,h2,h3{font-family:var(--display);text-wrap:balance;margin:0;line-height:1.15}
+h1{font-size:clamp(26px,4vw,38px);font-weight:700;letter-spacing:-.01em}
+h2{font-size:22px;font-weight:700}
+h3{font-size:15px;font-weight:600;font-family:var(--body)}
+p{margin:0}
+.lbl{font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);font-weight:600}
+.mono{font-family:var(--mono)}
+.num{font-variant-numeric:tabular-nums}
+
+/* header */
+header.top{padding-block:28px 20px;display:flex;flex-wrap:wrap;gap:16px 32px;align-items:flex-end;justify-content:space-between;border-bottom:1px solid var(--line)}
+.concept{display:inline-flex;gap:8px;align-items:center;font-size:12px;color:var(--ink-2);margin-bottom:10px}
+.concept b{font-family:var(--mono);font-weight:500;font-size:11px;background:var(--surface-2);border:1px solid var(--line);padding:2px 8px;border-radius:4px;color:var(--ink)}
+.meta{display:grid;grid-template-columns:repeat(3,auto);gap:4px 24px;font-size:13px}
+.meta div span{display:block}
+.meta .v{font-family:var(--mono);font-size:13px;color:var(--ink)}
+nav.jump{display:flex;gap:6px;flex-wrap:wrap;padding-block:14px}
+nav.jump a{font-size:13px;color:var(--ink-2);text-decoration:none;padding:5px 10px;border-radius:6px;border:1px solid var(--line);background:var(--surface)}
+nav.jump a:hover,nav.jump a:focus-visible{color:var(--ink);border-color:var(--axis);outline:none}
+
+/* headline */
+.headline{display:grid;grid-template-columns:minmax(0,1.25fr) minmax(0,1fr);gap:24px;padding-block:12px 8px;align-items:start}
+.headline .story{display:flex;flex-direction:column;gap:12px}
+.headline .big{font-family:var(--display);font-size:clamp(22px,3vw,30px);font-weight:700;line-height:1.2;text-wrap:balance}
+.headline .big em{font-style:normal;color:var(--crit-ink)}
+.headline p.lede{color:var(--ink-2);max-width:62ch}
+.scenario-pill{display:inline-flex;align-items:center;gap:8px;font-size:12px;padding:4px 10px;border-radius:999px;background:var(--surface);border:1px solid var(--line);width:fit-content}
+.scenario-pill i{width:8px;height:8px;border-radius:50%;background:var(--crit)}
+.scenario-pill.rec i{background:var(--good)}
+.tiles{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:1px;background:var(--line);border:1px solid var(--line);border-radius:10px;overflow:hidden}
+.tile{background:var(--surface);padding:14px 16px;display:flex;flex-direction:column;gap:2px}
+.tile .v{font-size:22px;font-weight:600;font-family:var(--body)}
+.tile .d{font-size:12.5px;color:var(--ink-2)}
+.tile .d.bad{color:var(--crit-ink)} .tile .d.ok{color:var(--good-ink)}
+
+/* sections */
+section.blk{padding-block:40px 8px;display:flex;flex-direction:column;gap:18px}
+.sec-head{display:flex;flex-direction:column;gap:6px;max-width:75ch}
+.sec-head p{color:var(--ink-2)}
+.q{font-family:var(--mono);font-size:12px;color:var(--accent)}
+.grid2{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:18px}
+.card{background:var(--surface);border:1px solid var(--line);border-radius:10px;padding:16px;display:flex;flex-direction:column;gap:10px;min-width:0}
+.card .sub{font-size:13px;color:var(--ink-2)}
+.chart{width:100%;min-height:220px;position:relative}
+.chart svg{display:block;overflow:visible}
+.legend{display:flex;flex-wrap:wrap;gap:6px 16px;font-size:12.5px;color:var(--ink-2)}
+.legend span{display:inline-flex;align-items:center;gap:6px}
+.sw{width:16px;height:0;border-top:2px solid currentColor;display:inline-block}
+.sw.dash{border-top-style:dashed}
+.sw.box{height:10px;border:0;border-radius:2px;width:10px}
+.why{font-size:13.5px;color:var(--ink);background:var(--surface-2);border-radius:8px;padding:10px 12px}
+.why b{font-weight:600}
+.scroll-x{overflow-x:auto;-webkit-overflow-scrolling:touch}
+
+/* svg text */
+.ax{font:11px var(--mono);fill:var(--muted)}
+.lab{font:12px var(--body);fill:var(--ink-2)}
+.lab-b{font:600 12px var(--body);fill:var(--ink)}
+.gl{stroke:var(--grid);stroke-width:1}
+.bl{stroke:var(--axis);stroke-width:1}
+
+/* tooltip */
+#tip{position:fixed;pointer-events:none;z-index:50;background:var(--ink);color:var(--bg);font-size:12px;line-height:1.45;padding:8px 10px;border-radius:6px;max-width:260px;box-shadow:0 4px 16px rgba(0,0,0,.18)}
+#tip b{font-weight:600}
+#tip .r{display:flex;justify-content:space-between;gap:14px;font-variant-numeric:tabular-nums}
+
+/* impact matrix */
+.impacts{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px}
+.imp{background:var(--surface);border:1px solid var(--line);border-radius:10px;padding:14px;display:flex;flex-direction:column;gap:6px;min-width:0}
+.imp .top{display:flex;justify-content:space-between;align-items:center;gap:8px}
+.chip{font-size:11px;font-weight:600;padding:2px 8px;border-radius:999px;display:inline-flex;gap:5px;align-items:center;border:1px solid var(--line);color:var(--ink);white-space:nowrap}
+.chip i{width:8px;height:8px;border-radius:2px;display:inline-block}
+.chip.crit i{background:var(--crit)} .chip.ser i{background:var(--serious)} .chip.warn i{background:var(--warn)} .chip.good i{background:var(--good)}
+.imp .v{font-size:18px;font-weight:600}
+.imp p{font-size:13px;color:var(--ink-2)}
+
+/* decisions */
+.opts{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}
+.opt{display:grid;grid-template-columns:auto 1fr;gap:4px 12px;background:var(--surface);border:1px solid var(--line);border-radius:10px;padding:14px;cursor:pointer;align-items:start}
+.opt:hover{border-color:var(--axis)}
+.opt input{margin-top:4px;width:18px;height:18px;accent-color:var(--accent)}
+.opt input:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+.opt .t{font-weight:600}
+.opt .facts{grid-column:2;display:flex;flex-wrap:wrap;gap:4px 14px;font-size:12.5px;color:var(--ink-2)}
+.opt p{grid-column:2;font-size:13px;color:var(--ink-2)}
+.opt.on{border-color:var(--accent);box-shadow:inset 0 0 0 1px var(--accent)}
+.rec-tag{font-size:10.5px;font-weight:600;letter-spacing:.06em;text-transform:uppercase;color:var(--good-ink);margin-left:6px}
+.btns{display:flex;gap:8px;flex-wrap:wrap}
+button.b{font:500 13px var(--body);padding:7px 12px;border-radius:6px;border:1px solid var(--axis);background:var(--surface);color:var(--ink);cursor:pointer}
+button.b:hover{background:var(--surface-2)}
+button.b:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+table.t{width:100%;border-collapse:collapse;font-size:13px}
+table.t th,table.t td{text-align:left;padding:8px 10px;border-bottom:1px solid var(--line);vertical-align:top}
+table.t th{font-size:11px;letter-spacing:.06em;text-transform:uppercase;color:var(--muted);font-weight:600}
+table.t td.n,table.t th.n{text-align:right;font-variant-numeric:tabular-nums;white-space:nowrap}
+table.t tr.tot td{font-weight:600;border-bottom:0}
+table.t tr.sel td{background:var(--surface-2)}
+.verdict{border-left:3px solid var(--good);padding:12px 14px;background:var(--surface);border-radius:0 10px 10px 0;display:flex;flex-direction:column;gap:6px}
+.verdict ol{margin:0;padding-left:20px;display:flex;flex-direction:column;gap:4px;font-size:14px}
+
+/* engine */
+.pipe{display:grid;grid-template-columns:repeat(6,minmax(0,1fr));gap:10px;counter-reset:s;list-style:none;padding:0;margin:0}
+.pipe li{background:var(--surface);border:1px solid var(--line);border-radius:10px;padding:12px;font-size:13px;color:var(--ink-2);display:flex;flex-direction:column;gap:4px;min-width:0}
+.pipe li b{color:var(--ink);font-size:13.5px}
+.pipe li::before{counter-increment:s;content:counter(s,decimal-leading-zero);font-family:var(--mono);font-size:11px;color:var(--accent)}
+.ents{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px}
+.ent{background:var(--surface);border:1px solid var(--line);border-radius:10px;padding:12px;min-width:0}
+.ent h3{font-family:var(--mono);font-size:13px;font-weight:500;color:var(--accent)}
+.ent p{font-size:12.5px;color:var(--ink-2);margin-top:4px}
+.ent code{font-family:var(--mono);font-size:11.5px;color:var(--ink)}
+footer{margin-top:40px;font-size:12.5px;color:var(--muted);border-top:1px solid var(--line);padding-top:14px}
+
+@media (max-width:900px){
+  .headline,.grid2,.opts{grid-template-columns:minmax(0,1fr)}
+  .impacts{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .pipe{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .ents{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .meta{grid-template-columns:repeat(2,auto)}
+}
+@media (max-width:520px){
+  .impacts,.ents{grid-template-columns:minmax(0,1fr)}
+  .tile .v{font-size:19px}
+}
+@media (prefers-reduced-motion:no-preference){ .chart svg .anim{transition:opacity .2s} }
+</style>
+</head>
+<body>
+
+<div class="wrap">
+  <header class="top">
+    <div>
+      <div class="concept"><a href="index.html" style="color:var(--accent);text-decoration:none">← Paramap</a><b>LIVE DEMO</b> Sample project, illustrative figures</div>
+      <h1>Eastport Logistics Hub, Phase 2</h1>
+      <p class="lbl" style="margin-top:6px">Delay impact report · Paramap</p>
+    </div>
+    <div class="meta">
+      <div><span class="lbl">Data date</span><span class="v">19 Oct 2026 (wk 42)</span></div>
+      <div><span class="lbl">Budget</span><span class="v">$48.0M</span></div>
+      <div><span class="lbl">Plan versions</span><span class="v">v1 baseline · v3 current</span></div>
+      <div><span class="lbl">Source file</span><span class="v">EPH2_master_plan.xlsx</span></div>
+      <div><span class="lbl">Tasks · links</span><span class="v">1,284 · 2,906</span></div>
+      <div><span class="lbl">Simulation</span><span class="v">2,000 runs</span></div>
+    </div>
+  </header>
+  <nav class="jump" aria-label="Sections">
+    <a href="#cause">What happened</a><a href="#milestones">Milestones</a><a href="#progress">Weekly progress</a><a href="#forecast">Completion forecast</a><a href="#impacts">Knock-on impacts</a><a href="#decide">Decisions</a><a href="#engine">How it works</a>
+  </nav>
+
+  <div class="headline">
+    <div class="story">
+      <span class="scenario-pill" id="scnPill"><i></i><span id="scnName">Scenario: no recovery action</span></span>
+      <div class="big" id="bigLine"></div>
+      <p class="lede">The HV switchgear failed its factory test and arrived 3 weeks late. On its own that sounds small. Paramap traced it through the plan: one week was absorbed by float, but the electrical crew was released to another site while they waited, and the pushed-out commissioning now lands in the two-week Christmas shutdown. Those two effects turned a 3-week supplier delay into a <b>5-week handover slip</b>.</p>
+    </div>
+    <div class="tiles" id="tiles"></div>
+  </div>
+
+  <!-- 1. CAUSE -->
+  <section class="blk" id="cause">
+    <div class="sec-head">
+      <span class="q">Q1 · Where did the delay come from, and how did it travel?</span>
+      <h2>How a 3-week delay became 5 weeks</h2>
+      <p>The delayed task sits on the critical path. Each box shows how far that task has moved against the current plan (v3). Red boxes are critical; grey boxes had enough float to absorb the delay.</p>
+    </div>
+    <div class="card">
+      <div class="scroll-x"><div id="ripple" style="min-width:960px"></div></div>
+      <div class="legend">
+        <span><span class="sw box" style="background:var(--crit)"></span>Critical path, slipping</span>
+        <span><span class="sw box" style="background:var(--axis)"></span>Has float, no impact</span>
+        <span><span class="sw dash" style="color:var(--muted)"></span>Shared resource</span>
+      </div>
+    </div>
+    <div class="grid2">
+      <div class="card">
+        <h3>Slip build-up at handover</h3>
+        <p class="sub">Weeks added or removed at practical completion, by cause</p>
+        <div class="chart" id="waterfall"></div>
+      </div>
+      <div class="card">
+        <h3>Reasoning, in plain language</h3>
+        <div class="why"><b>1. Supplier delay, +3 weeks.</b> Switchgear was due 21 Sep 2026. It failed its factory acceptance test and was re-tested, arriving 12 Oct 2026.</div>
+        <div class="why"><b>2. Float, −1 week.</b> Energising the main board had 1 week of free float, so only 2 weeks reached the next task.</div>
+        <div class="why"><b>3. Crew remobilisation, +1 week.</b> The electrical subcontractor moved 40 of 52 electricians to another job during the wait. Bringing them back and re-inducting them costs a week before Zone B install can resume at full rate.</div>
+        <div class="why"><b>4. Calendar, +2 weeks.</b> Commissioning was planned to finish before the site shutdown (21 Dec 2026 to 1 Jan 2027). Moved 3 weeks later, it now spans the shutdown and stops for 2 weeks.</div>
+        <p class="sub">Paramap found steps 3 and 4 automatically: step 3 from the resource assignments in the plan, step 4 from the project calendar. Neither is visible if you only look at the late task.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- 2. MILESTONES -->
+  <section class="blk" id="milestones">
+    <div class="sec-head">
+      <span class="q">Q2 · What did we promise, what do we plan now, and where are we heading?</span>
+      <h2>Milestones: baseline, revision and forecast</h2>
+      <p>Three versions of every key date. The baseline (v1) is the plan as first approved. The revision (v3) is the current approved plan. The forecast is what Paramap expects from today's progress, with the P80 range as a whisker.</p>
+    </div>
+    <div class="card">
+      <div class="legend">
+        <span><svg width="14" height="14" aria-hidden="true"><circle cx="7" cy="7" r="5" fill="var(--surface)" stroke="var(--s-base)" stroke-width="2"/></svg>Baseline v1</span>
+        <span><svg width="14" height="14" aria-hidden="true"><path d="M7 1 L13 7 L7 13 L1 7Z" fill="var(--s-rev)"/></svg>Revision v3</span>
+        <span><svg width="14" height="14" aria-hidden="true"><rect x="2" y="2" width="10" height="10" rx="2" fill="var(--s-act)"/></svg>Forecast P50 / actual</span>
+        <span><span class="sw" style="color:var(--s-act)"></span>P50 to P80 range</span>
+        <span><span class="sw dash" style="color:var(--crit)"></span>Tenant contract date</span>
+      </div>
+      <div class="chart" id="mstrip" style="min-height:250px"></div>
+    </div>
+    <div class="card">
+      <h3>Milestone trend: how the forecast date moved, report by report</h3>
+      <p class="sub">Each line is one milestone. A flat line means the date is holding. A step up means the forecast slipped in that week's report. This is the clearest early-warning view for management.</p>
+      <div class="legend" id="mtaLegend"></div>
+      <div class="chart" id="mta" style="min-height:300px"></div>
+      <div class="why"><b>Read it like this:</b> practical completion held at 12 Jul 2027 for 20 weeks, slipped twice in spring because of rain on the structure (accepted in revision v3), then jumped twice in October. The first jump (wk 40) was the supplier notice. The second (wk 42) came when the crew release and the shutdown calendar were factored in.</div>
+    </div>
+  </section>
+
+  <!-- 3. PROGRESS -->
+  <section class="blk" id="progress">
+    <div class="sec-head">
+      <span class="q">Q3 · How does real progress compare, week by week?</span>
+      <h2>Planned vs actual progress</h2>
+      <p>Cumulative physical progress (the S-curve) for each plan version, actual progress to date, and the forecast to completion with its confidence band.</p>
+    </div>
+    <div class="card">
+      <div class="legend">
+        <span style="color:var(--s-base)"><span class="sw dash"></span><span style="color:var(--ink-2)">Baseline v1</span></span>
+        <span style="color:var(--s-rev)"><span class="sw"></span><span style="color:var(--ink-2)">Revision v3</span></span>
+        <span style="color:var(--s-act)"><span class="sw" style="border-top-width:3px"></span><span style="color:var(--ink-2)">Actual</span></span>
+        <span style="color:var(--s-act)"><span class="sw dash"></span><span style="color:var(--ink-2)">Forecast P50</span></span>
+        <span><span class="sw box" style="background:var(--s-act);opacity:.18"></span>P10 to P90 band</span>
+      </div>
+      <div class="chart" id="scurve" style="min-height:320px"></div>
+    </div>
+    <div class="grid2">
+      <div class="card">
+        <h3>Weekly progress, weeks 1 to 42</h3>
+        <p class="sub">Bars are actual % earned each week. The line is what revision v3 planned for that week.</p>
+        <div class="chart" id="weekly"></div>
+      </div>
+      <div class="card">
+        <h3>Performance indices at the data date</h3>
+        <p class="sub">Earned value measures that drive the forecast</p>
+        <table class="t" id="evm"></table>
+        <div class="why"><b>Why progress dipped in weeks 39 to 42:</b> electrical work in Zone B stopped while waiting for switchgear and the crew was released. Other trades kept going, so the project did not stop, it slowed.</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 4. FORECAST -->
+  <section class="blk" id="forecast">
+    <div class="sec-head">
+      <span class="q">Q4 · When will we actually finish, and how sure are we?</span>
+      <h2>Completion forecast</h2>
+      <p>Paramap re-runs the schedule 2,000 times with task durations drawn from how each trade has really performed on this job. The result is a range, not a single date.</p>
+    </div>
+    <div class="grid2">
+      <div class="card">
+        <h3>Chance of finishing in each week</h3>
+        <p class="sub" id="probSub"></p>
+        <div class="chart" id="prob"></div>
+      </div>
+      <div class="card">
+        <h3>What the range means</h3>
+        <table class="t" id="ptable"></table>
+        <div class="why"><b>Tip for reporting:</b> commit to the P80 date externally and manage the team to the P50 date. Committing to the P50 date means a coin flip on whether you hit it.</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 5. IMPACTS -->
+  <section class="blk" id="impacts">
+    <div class="sec-head">
+      <span class="q">Q5 · What else does this delay touch?</span>
+      <h2>Knock-on impacts</h2>
+      <p>Time is only the first effect. Paramap carries the slip into cost, cash, resources, contracts and risk, using the rates and assignments already in the plan.</p>
+    </div>
+    <div class="impacts" id="impactGrid"></div>
+    <div class="grid2">
+      <div class="card">
+        <h3>Cumulative spend, $M</h3>
+        <p class="sub">Spend follows progress, so a slip pushes cash out and the extra weeks add cost at the end.</p>
+        <div class="legend">
+          <span style="color:var(--s-base)"><span class="sw dash"></span><span style="color:var(--ink-2)">Baseline budget curve</span></span>
+          <span style="color:var(--s-act)"><span class="sw" style="border-top-width:3px"></span><span style="color:var(--ink-2)">Actual</span></span>
+          <span style="color:var(--s-act)"><span class="sw dash"></span><span style="color:var(--ink-2)">Forecast</span></span>
+        </div>
+        <div class="chart" id="cost"></div>
+        <table class="t" id="costTable"></table>
+      </div>
+      <div class="card">
+        <h3>Electrical crew demand, people per week</h3>
+        <p class="sub">The idle weeks and the later pile-up both come from the same delay. Red shows demand above the subcontractor's available crew.</p>
+        <div class="legend">
+          <span><span class="sw box" style="background:var(--s-act)"></span>Forecast demand</span>
+          <span><span class="sw box" style="background:var(--crit)"></span>Above capacity</span>
+          <span style="color:var(--s-base)"><span class="sw"></span><span style="color:var(--ink-2)">Baseline demand</span></span>
+          <span style="color:var(--muted)"><span class="sw dash"></span><span style="color:var(--ink-2)">Available crew (70)</span></span>
+        </div>
+        <div class="chart" id="res"></div>
+        <div class="why" id="resWhy"></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 6. DECISIONS -->
+  <section class="blk" id="decide">
+    <div class="sec-head">
+      <span class="q">Q6 · What should management do?</span>
+      <h2>Recovery options</h2>
+      <p>Pick any combination. Every number on this page, including the headline and the charts above, recalculates for the options you choose.</p>
+    </div>
+    <div class="opts" id="opts"></div>
+    <div class="btns">
+      <button class="b" id="btnRec" type="button">Apply recommended plan</button>
+      <button class="b" id="btnNone" type="button">Reset to no action</button>
+    </div>
+    <div class="card">
+      <h3>Compare scenarios</h3>
+      <div class="scroll-x"><table class="t" id="cmp"></table></div>
+    </div>
+    <div class="verdict">
+      <span class="lbl" style="color:var(--good-ink)">Recommendation</span>
+      <p style="font-weight:600">Approve options C and D now, claim against the switchgear supplier, and re-baseline the tenant's handover expectation to the new P80 date.</p>
+      <ol>
+        <li>C and D together recover 3 of the 5 weeks for about $230k, and avoid around $1.1M of combined cost and lost rent compared with doing nothing.</li>
+        <li>Adding weekend shifts (B) recovers one more week but stacks fatigue risk on top of the holiday crew, during the testing phase where defects are hardest to find. The extra $140k saving is not worth that risk.</li>
+        <li>The supply contract allows delay damages of up to $210k. That money is not counted above, so treat it as upside.</li>
+        <li>Decide by 2 Nov 2026. Option C needs agreement with the commissioning team before the shutdown roster is published.</li>
+      </ol>
+    </div>
+  </section>
+
+  <!-- 7. ENGINE -->
+  <section class="blk" id="engine">
+    <div class="sec-head">
+      <span class="q">Under the hood</span>
+      <h2>How Paramap turns a project plan into this page</h2>
+      <p>Paramap reads the plan you already maintain, an Excel sheet or a Microsoft Project, Primavera P6 or Smartsheet export. Every weekly upload is saved as a snapshot, so each chart can compare versions.</p>
+    </div>
+    <ol class="pipe">
+      <li><b>Import</b>Map the sheet's columns once. Paramap remembers the mapping for next week's upload.</li>
+      <li><b>Validate</b>Flag missing links, open-ended tasks, dates in the past without actuals, and circular dependencies.</li>
+      <li><b>Snapshot</b>Store the upload as a version: baseline, approved revision or weekly progress update.</li>
+      <li><b>Reschedule</b>Re-run the critical path with real progress, calendars and resource limits. Report what moved and why.</li>
+      <li><b>Simulate</b>Monte Carlo over durations, using each trade's actual-vs-planned history as the spread.</li>
+      <li><b>Translate</b>Turn the slip into cost, cash, resource, contract and revenue impacts, and write the reasoning.</li>
+    </ol>
+    <div class="card">
+      <h3>Excel column mapping</h3>
+      <p class="sub">The left column shows typical headers in a project plan. Only the starred fields are required. The rest make the impact analysis richer.</p>
+      <div class="scroll-x"><table class="t" id="mapTable"></table></div>
+    </div>
+    <div>
+      <h3 style="margin-bottom:10px">Data model</h3>
+      <div class="ents" id="ents"></div>
+    </div>
+    <div class="card">
+      <h3>How each prediction is made</h3>
+      <table class="t">
+        <tr><th>Output</th><th>Method</th></tr>
+        <tr><td>Delay ripple and critical path</td><td>Critical path method (forward and backward pass) on the dependency network, run once with v3 dates and once with actual progress. The difference per task is the slip. Float used and calendar effects are recorded as causes.</td></tr>
+        <tr><td>Forecast dates and P50/P80</td><td>Monte Carlo over task durations. Each remaining duration is scaled by the trade's performance factor so far (actual ÷ planned duration), with a triangular spread from that trade's history.</td></tr>
+        <tr><td>S-curve forecast</td><td>Remaining work is spread along the rescheduled plan. The band is the P10 to P90 of the simulation.</td></tr>
+        <tr><td>Cost impact</td><td>Time-related costs (site overheads, hire, supervision) × weeks of slip. Stand-by and remobilisation from resource assignments. Penalties from contract terms entered once per project.</td></tr>
+        <tr><td>Resource impact</td><td>Assignments re-spread on the rescheduled dates and compared with the capacity set for each crew or role.</td></tr>
+        <tr><td>Reasoning text</td><td>Generated from the trace of causes, not written freehand, so every sentence links back to a task, link or calendar entry in the plan.</td></tr>
+      </table>
+    </div>
+  </section>
+
+  <footer>All figures on this page are sample data for an illustrative project, chosen to show the design. Dates are shown as calendar dates, with project weeks (wk) counted from the start on 29 Dec 2025.</footer>
+</div>
+<div id="tip" hidden></div>
+
+<script>
+(function(){
+const NS='http://www.w3.org/2000/svg';
+const T0=Date.UTC(2025,11,29), DAY=864e5, DD=42;
+const wd=w=>new Date(T0+Math.round(w*7)*DAY);
+const fd=w=>wd(w).toLocaleDateString('en-GB',{day:'numeric',month:'short',year:'numeric',timeZone:'UTC'});
+const fm=w=>wd(w).toLocaleDateString('en-GB',{month:'short',year:'2-digit',timeZone:'UTC'}).replace(' ',' ’');
+const money=k=>k>=1000?'$'+(k/1000).toFixed(2)+'M':'$'+Math.round(k)+'k';
+const css=v=>getComputedStyle(document.documentElement).getPropertyValue(v).trim();
+
+/* ---------- model ---------- */
+const sm=x=>x<=0?0:x>=1?1:x*x*(3-2*x);
+const sinv=y=>{let lo=0,hi=1;for(let i=0;i<40;i++){const m=(lo+hi)/2;sm(m)<y?lo=m:hi=m;}return (lo+hi)/2;};
+const Bc=t=>sm(t/80), Rc=t=>sm(t/82);
+const lag=t=>t<30?t/30:t<38?1+(t-30)/8*.4:1.4+(t-38)/4*1.6;
+const Ac=t=>sm((t-lag(t)-.25*Math.sin(t*1.3))/82);
+const A42=Ac(DD), X0=sinv(A42);
+const Fc=(t,Tf)=>t<=DD?Ac(t):sm(X0+(1-X0)*Math.min(1,(t-DD)/(Tf-DD)));
+const BUDGET=48.0, CPI=.985;
+const PROB=[[83,2],[84,4],[85,9],[86,15],[87,20],[88,16],[89,14],[90,9],[91,6],[92,3],[93,2]];
+const CONTRACT=84, CONTINGENCY=1100;
+
+const OPTS=[
+ {id:'B',name:'Weekend shifts on commissioning',weeks:2,cost:260,risk:'High',
+  text:'Six-day weeks for 8 weeks of testing and commissioning. Fast to set up, but tired teams miss defects during the phase where defects matter most.'},
+ {id:'C',name:'Work through the holiday shutdown',weeks:2,cost:140,risk:'Medium',
+  text:'Keep a 12-person commissioning team on site over the 2-week shutdown, at holiday rates. Removes the calendar effect entirely. Needs the team’s agreement by 2 Nov.'},
+ {id:'D',name:'Energise Zone A early on temporary supply',weeks:1,cost:90,risk:'Medium',
+  text:'Hire a temporary connection so Zone A testing starts while Zone B is still being installed. Needs a network operator permit (lead time about 3 weeks).'},
+ {id:'E',name:'Do nothing, accept the new dates',weeks:0,cost:0,risk:'Low',none:true,
+  text:'Re-baseline to the forecast. No extra spend, but the full 5 weeks of overheads, penalties and lost rent apply.'}
+];
+const state={B:false,C:false,D:false};
+const recOf=s=>{let r=(s.B?2:0)+(s.C?2:0)+(s.D?1:0); if(s.B&&s.C) r-=1; return Math.min(4,r);};
+function impacts(s){
+  const rec=recOf(s), slip=5-rec, fin=87-rec;
+  const accel=(s.B?260:0)+(s.C?140:0)+(s.D?90:0);
+  const rows=[
+    ['Site overheads and supervision ($68k/wk)',68*slip],
+    ['Crew stand-by and remobilisation (already incurred)',185],
+    ['Extended crane and plant hire ($22k/wk)',22*slip],
+    ['Temporary power for testing',60],
+    ['Tenant late-delivery penalty ($40k/wk after '+fd(CONTRACT)+')',40*Math.max(0,fin-CONTRACT)],
+  ];
+  if(accel) rows.push(['Recovery actions',accel]);
+  const direct=rows.reduce((a,r)=>a+r[1],0), revenue=310*slip;
+  return {rec,slip,fin,p80:89-rec,p10:85-rec,p90:90-rec,accel,rows,direct,revenue,total:direct+revenue,eac:BUDGET+direct/1000};
+}
+const MS=[
+ {name:'Design freeze',base:10,rev:10,act:11},
+ {name:'Structure topped out',base:34,rev:36,act:36},
+ {name:'Building energised',base:44,rev:46,fc:48,p80:49},
+ {name:'Systems commissioned',base:70,rev:72,fc:77,p80:79,shift:true},
+ {name:'Practical completion',base:80,rev:82,fc:87,p80:89,shift:true}
+];
+
+/* ---------- svg helpers ---------- */
+function el(tag,a,parent){const e=document.createElementNS(NS,tag);for(const k in a) e.setAttribute(k,a[k]);if(parent) parent.appendChild(e);return e;}
+function txt(parent,x,y,s,cls,anchor,extra){const t=el('text',Object.assign({x,y,class:cls||'ax','text-anchor':anchor||'start'},extra||{}),parent);t.textContent=s;return t;}
+const sc=(d0,d1,r0,r1)=>v=>r0+(v-d0)/(d1-d0)*(r1-r0);
+function mkSvg(host,h){host.innerHTML='';const w=Math.max(280,host.clientWidth);const s=el('svg',{width:w,height:h,viewBox:`0 0 ${w} ${h}`,role:'img'},host);return {s,w,h};}
+function path(pts){return pts.map((p,i)=>(i?'L':'M')+p[0].toFixed(1)+' '+p[1].toFixed(1)).join('');}
+
+const tip=document.getElementById('tip');
+function showTip(html,ev){tip.innerHTML=html;tip.hidden=false;const r=tip.getBoundingClientRect();let x=ev.clientX+14,y=ev.clientY+14;if(x+r.width>innerWidth-8)x=ev.clientX-r.width-14;if(y+r.height>innerHeight-8)y=ev.clientY-r.height-14;tip.style.left=x+'px';tip.style.top=y+'px';}
+function hideTip(){tip.hidden=true;}
+function hover(node,fn){node.addEventListener('pointermove',e=>showTip(fn(e),e));node.addEventListener('pointerleave',hideTip);}
+const row=(k,v)=>`<div class="r"><span>${k}</span><b>${v}</b></div>`;
+
+/* week-axis line chart with crosshair */
+function weekChart(host,o){
+  const {s,w,h}=mkSvg(host,o.h||300);
+  const m={l:o.ml||44,r:o.mr||16,t:14,b:28};
+  const x=sc(o.x0,o.x1,m.l,w-m.r), y=sc(o.y0,o.y1,h-m.b,m.t);
+  o.yt.forEach(v=>{el('line',{x1:m.l,x2:w-m.r,y1:y(v),y2:y(v),class:v===o.y0?'bl':'gl'},s);txt(s,m.l-6,y(v)+4,o.yf(v),'ax','end');});
+  const step=w<560?(o.xstepS||16):(o.xstep||8);
+  for(let v=Math.ceil(o.x0/step)*step;v<=o.x1;v+=step){el('line',{x1:x(v),x2:x(v),y1:h-m.b,y2:h-m.b+4,class:'bl'},s);txt(s,x(v),h-m.b+17,fm(v),'ax','middle');}
+  (o.under||[]).forEach(f=>f(s,x,y,m,w,h));
+  o.series.forEach(se=>{
+    if(se.band){const up=[],lo=[];for(let t=se.from;t<=se.to;t+=.5){up.push([x(t),y(se.hi(t))]);lo.unshift([x(t),y(se.lo(t))]);}
+      el('path',{d:path(up.concat(lo))+'Z',fill:se.color,'fill-opacity':.16,stroke:'none'},s);return;}
+    const pts=[];for(let t=se.from;t<=se.to;t+=se.step||.5) pts.push([x(t),y(se.f(t))]);
+    el('path',{d:path(pts),fill:'none',stroke:se.color,'stroke-width':se.width||2,'stroke-dasharray':se.dash||'','stroke-linejoin':'round','stroke-linecap':'round'},s);
+  });
+  (o.over||[]).forEach(f=>f(s,x,y,m,w,h));
+  const cross=el('line',{y1:m.t,y2:h-m.b,stroke:css('--muted'),'stroke-width':1,visibility:'hidden'},s);
+  const hit=el('rect',{x:m.l,y:m.t,width:w-m.l-m.r,height:h-m.t-m.b,fill:'transparent'},s);
+  hit.addEventListener('pointermove',e=>{const r=s.getBoundingClientRect();let t=Math.round(o.x0+(e.clientX-r.left-m.l)/(w-m.l-m.r)*(o.x1-o.x0));t=Math.max(o.x0,Math.min(o.x1,t));cross.setAttribute('x1',x(t));cross.setAttribute('x2',x(t));cross.setAttribute('visibility','visible');showTip(o.tip(t),e);});
+  hit.addEventListener('pointerleave',()=>{cross.setAttribute('visibility','hidden');hideTip();});
+  return {s,x,y,m,w,h};
+}
+
+/* ---------- renderers ---------- */
+function renderRipple(){
+  const host=document.getElementById('ripple');host.innerHTML='';
+  const W=960,H=290,s=el('svg',{width:W,height:H,viewBox:`0 0 ${W} ${H}`,role:'img','aria-label':'Delay propagation through the critical path'},host);
+  const bw=136,bh=74,gap=(W-6*bw)/5;
+  const N=[
+    {t:'HV switchgear delivery',s:'+3 wk',n:'Factory test failed',c:1},
+    {t:'Energise main board',s:'+2 wk',n:'1 wk float absorbed',c:1},
+    {t:'MEP install, Zone B',s:'+3 wk',n:'Crew remobilisation +1',c:1},
+    {t:'Integrated systems test',s:'+3 wk',n:'Follows Zone B',c:1},
+    {t:'Commissioning',s:'+5 wk',n:'Hits 2-wk shutdown',c:1},
+    {t:'Practical completion',s:'+5 wk',n:'Milestone M5',c:1,ms:1}
+  ];
+  const y1=30;
+  el('marker',{id:'ah',viewBox:'0 0 10 10',refX:9,refY:5,markerWidth:7,markerHeight:7,orient:'auto-start-reverse'},el('defs',{},s));
+  el('path',{d:'M0 0 L10 5 L0 10z',fill:css('--crit')},s.querySelector('marker'));
+  N.forEach((n,i)=>{
+    const x=i*(bw+gap);
+    if(i){el('line',{x1:x-gap+2,y1:y1+bh/2,x2:x-3,y2:y1+bh/2,stroke:css('--crit'),'stroke-width':2,'marker-end':'url(#ah)'},s);}
+    const g=el('g',{},s);
+    el('rect',{x,y:y1,width:bw,height:bh,rx:8,fill:css('--surface'),stroke:css('--crit'),'stroke-width':1.5},g);
+    el('rect',{x,y:y1,width:5,height:bh,rx:2,fill:css('--crit')},g);
+    txt(g,x+14,y1+20,n.t,'lab-b');
+    txt(g,x+14,y1+44,n.s,'lab-b',null,{style:'font-size:18px;fill:'+css('--crit-ink')});
+    txt(g,x+14,y1+63,n.n,'lab',null,{style:'font-size:11px'});
+    hover(g,()=>`<b>${n.t}</b><br>Moved ${n.s} against revision v3.<br>${n.n}.`);
+  });
+  // non-critical
+  const side=[{at:2,t:'Fit-out, Zone C',s:'0 wk',n:'6 wk float, absorbs it'},{at:4,t:'External works',s:'0 wk',n:'9 wk float'}];
+  const y2=180;
+  side.forEach(n=>{
+    const x=n.at*(bw+gap);
+    el('rect',{x,y:y2,width:bw,height:bh,rx:8,fill:css('--surface-2'),stroke:css('--axis'),'stroke-width':1},s);
+    txt(s,x+14,y2+20,n.t,'lab-b');txt(s,x+14,y2+44,n.s,'lab-b',null,{style:'font-size:18px;fill:'+css('--muted')});txt(s,x+14,y2+63,n.n,'lab',null,{style:'font-size:11px'});
+  });
+  const xc=2*(bw+gap)+bw/2;
+  el('line',{x1:xc,y1:y1+bh+2,x2:xc,y2:y2-2,stroke:css('--muted'),'stroke-width':1.5,'stroke-dasharray':'4 4'},s);
+  txt(s,xc+8,(y1+bh+y2)/2+4,'Shared electrical crew','lab',null,{style:'font-size:11.5px'});
+  const xe=4*(bw+gap)+bw/2;
+  el('line',{x1:xe,y1:y1+bh+2,x2:xe,y2:y2-2,stroke:css('--axis'),'stroke-width':1.5},s);
+  txt(s,xe+8,(y1+bh+y2)/2+4,'Has float','lab',null,{style:'font-size:11.5px'});
+  txt(s,0,16,'Critical path, current plan (v3) vs forecast','ax');
+}
+
+function renderWaterfall(){
+  const host=document.getElementById('waterfall');
+  const {s,w,h}=mkSvg(host,280);
+  const nar=host.clientWidth<480;const items=[[nar?'Supplier':'Supplier delay',3,'crit'],[nar?'Float':'Float absorbed',-1,'good'],[nar?'Crew':'Crew remob.',1,'crit'],[nar?'Shutdown':'Holiday shutdown',2,'crit'],[nar?'Net':'Net slip',5,'tot']];
+  const m={l:28,r:8,t:20,b:34}, y=sc(0,6,h-m.b,m.t), bwid=(w-m.l-m.r)/items.length;
+  [0,1,2,3,4,5,6].forEach(v=>{el('line',{x1:m.l,x2:w-m.r,y1:y(v),y2:y(v),class:v?'gl':'bl'},s);txt(s,m.l-6,y(v)+4,v,'ax','end');});
+  let run=0;
+  items.forEach((it,i)=>{
+    const [name,v,k]=it; let a,b;
+    if(k==='tot'){a=0;b=v;} else {a=run;b=run+v;run=b;}
+    const x=m.l+i*bwid+bwid*.18, bw=bwid*.64, top=y(Math.max(a,b)), bot=y(Math.min(a,b));
+    const fill=k==='crit'?css('--crit'):k==='good'?css('--good'):css('--ink');
+    const r=el('rect',{x,y:top,width:bw,height:Math.max(2,bot-top),rx:3,fill},s);
+    if(i<items.length-1){const nx=m.l+(i+1)*bwid+bwid*.18;el('line',{x1:x+bw,x2:nx,y1:y(run),y2:y(run),stroke:css('--axis'),'stroke-dasharray':'3 3'},s);}
+    txt(s,x+bw/2,top-6,(v>0&&k!=='tot'?'+':'')+v+' wk','lab-b','middle');
+    txt(s,x+bw/2,h-m.b+16,name,'ax','middle');
+    hover(r,()=>`<b>${name}</b><br>${v>0?'+':''}${v} week${Math.abs(v)>1?'s':''} at handover`);
+  });
+}
+
+function renderMStrip(I){
+  const host=document.getElementById('mstrip');
+  const narrow=host.clientWidth<560, rowH=narrow?56:44;
+  const {s,w,h}=mkSvg(host,MS.length*rowH+40);
+  const ml=narrow?10:170, m={l:ml,r:narrow?12:18,t:8,b:28}, x=sc(0,94,m.l,w-m.r);
+  for(let v=0;v<=94;v+=narrow?24:8){el('line',{x1:x(v),x2:x(v),y1:m.t,y2:h-m.b,class:'gl'},s);txt(s,x(v),h-m.b+17,fm(v),'ax','middle');}
+  el('line',{x1:x(DD),x2:x(DD),y1:m.t,y2:h-m.b,stroke:css('--ink-2'),'stroke-width':1},s);
+  txt(s,x(DD)+4,h-m.b-4,'today','ax');
+  el('line',{x1:x(CONTRACT),x2:x(CONTRACT),y1:m.t,y2:h-m.b,stroke:css('--crit'),'stroke-width':1.5,'stroke-dasharray':'5 4'},s);
+  MS.forEach((ms,i)=>{
+    const cy=m.t+i*rowH+rowH/2+(narrow?8:0);
+    if(narrow) txt(s,0,cy-14,ms.name,'lab-b'); else txt(s,0,cy+4,ms.name,'lab-b');
+    const fc=ms.act!=null?ms.act:(ms.shift?ms.fc-I.rec:ms.fc), p80=ms.act!=null?null:(ms.shift?ms.p80-I.rec:ms.p80);
+    el('line',{x1:x(Math.min(ms.base,fc)),x2:x(Math.max(ms.base,fc,p80||0)),y1:cy,y2:cy,stroke:css('--grid'),'stroke-width':6,'stroke-linecap':'round'},s);
+    if(p80!=null) el('line',{x1:x(fc),x2:x(p80),y1:cy,y2:cy,stroke:css('--s-act'),'stroke-width':2},s), el('line',{x1:x(p80),x2:x(p80),y1:cy-6,y2:cy+6,stroke:css('--s-act'),'stroke-width':2},s);
+    const g=el('g',{},s);
+    el('circle',{cx:x(ms.base),cy,r:6,fill:css('--surface'),stroke:css('--s-base'),'stroke-width':2},g);
+    const rx=x(ms.rev);el('path',{d:`M${rx} ${cy-7}L${rx+7} ${cy}L${rx} ${cy+7}L${rx-7} ${cy}Z`,fill:css('--s-rev'),stroke:css('--surface'),'stroke-width':2},g);
+    el('rect',{x:x(fc)-6,y:cy-6,width:12,height:12,rx:2,fill:css('--s-act'),stroke:css('--surface'),'stroke-width':2},g);
+    const d=fc-ms.base;
+    const lx=x(Math.max(fc,p80||0))+10, flip=lx>w-44;
+    txt(s,flip?x(Math.min(ms.base,ms.rev))-12:lx,cy+4,(d>0?'+':'')+d+' wk','lab-b',flip?'end':'start',{style:'fill:'+(d>2?css('--crit-ink'):css('--ink-2'))});
+    const hitR=el('rect',{x:m.l,y:cy-rowH/2,width:w-m.l-m.r,height:rowH,fill:'transparent'},s);
+    hover(hitR,()=>`<b>${ms.name}</b>`+row('Baseline v1',fd(ms.base))+row('Revision v3',fd(ms.rev))+(ms.act!=null?row('Actual',fd(ms.act)):row('Forecast P50',fd(fc))+row('Forecast P80',fd(p80)))+row('vs baseline',(d>0?'+':'')+d+' wk'));
+  });
+}
+
+const MTA=(()=>{const R=[0,4,8,12,16,20,22,24,28,32,36,38,40,42];
+  const v=(r,a)=>r<=16?a[0]:r<=22?a[1]:r<=38?a[2]:r<=40?a[3]:a[4];
+  return R.map(r=>({r,m3:v(r,[44,45,46,47,48]),m4:v(r,[70,71,72,75,77]),m5:v(r,[80,81,82,85,87])}));})();
+function renderMTA(I){
+  const host=document.getElementById('mta');
+  const lines=[['m3','Building energised',css('--s-base')],['m4','Systems commissioned',css('--s-rev')],['m5','Practical completion',css('--s-act')]];
+  document.getElementById('mtaLegend').innerHTML=lines.map(l=>`<span style="color:${l[2]}"><span class="sw"></span><span style="color:var(--ink-2)">${l[1]}</span></span>`).join('')+'<span style="color:var(--muted)"><span class="sw dash"></span><span style="color:var(--ink-2)">With chosen recovery</span></span>';
+  const {s,w,h}=mkSvg(host,300);
+  const m={l:64,r:host.clientWidth<560?56:120,t:12,b:28};
+  const x=sc(0,44,m.l,w-m.r), y=sc(42,90,h-m.b,m.t);
+  [44,52,60,68,76,84].forEach(v=>{el('line',{x1:m.l,x2:w-m.r,y1:y(v),y2:y(v),class:'gl'},s);txt(s,m.l-6,y(v)+4,fd(v).replace(/^\d+ /,''),'ax','end');});
+  for(let r=0;r<=44;r+=host.clientWidth<560?12:6){txt(s,x(r),h-m.b+17,fm(r),'ax','middle');}
+  el('line',{x1:m.l,x2:w-m.r,y1:h-m.b,y2:h-m.b,class:'bl'},s);
+  txt(s,m.l,h-2,'Report date →','ax',null,{style:'display:none'});
+  lines.forEach(([k,name,c])=>{
+    const pts=[];MTA.forEach((d,i)=>{if(i) pts.push([x(d.r),y(MTA[i-1][k])]);pts.push([x(d.r),y(d[k])]);});
+    el('path',{d:path(pts),fill:'none',stroke:c,'stroke-width':2,'stroke-linejoin':'round'},s);
+    const last=MTA[MTA.length-1][k];
+    el('circle',{cx:x(42),cy:y(last),r:4.5,fill:c,stroke:css('--surface'),'stroke-width':2},s);
+    if(k!=='m3'&&I.rec){const nv=last-I.rec;el('line',{x1:x(42),x2:x(44),y1:y(last),y2:y(nv),stroke:c,'stroke-width':2,'stroke-dasharray':'4 3'},s);el('circle',{cx:x(44),cy:y(nv),r:4,fill:css('--surface'),stroke:c,'stroke-width':2},s);}
+    const endY=k!=='m3'&&I.rec?y(last-I.rec):y(last);
+    if(host.clientWidth>=560) txt(s,x(44)+8,endY+4,fd(k!=='m3'?last-I.rec:last),'lab-b');
+  });
+  const hit=el('rect',{x:m.l,y:m.t,width:w-m.l-m.r,height:h-m.t-m.b,fill:'transparent'},s);
+  hover(hit,e=>{const r=s.getBoundingClientRect();const rw=(e.clientX-r.left-m.l)/(w-m.l-m.r)*44;let d=MTA[0];MTA.forEach(q=>{if(q.r<=rw)d=q;});
+    return `<b>Report of ${fd(d.r)}</b>`+row('Building energised',fd(d.m3))+row('Systems commissioned',fd(d.m4))+row('Practical completion',fd(d.m5));});
+}
+
+function renderSCurve(I){
+  const host=document.getElementById('scurve');
+  const pct=v=>Math.round(v*100)+'%';
+  const fin=I.fin;
+  weekChart(host,{h:320,x0:0,x1:94,y0:0,y1:1,yt:[0,.25,.5,.75,1],yf:pct,
+    series:[
+      {band:1,from:DD,to:I.p90,hi:t=>Fc(t,I.p10),lo:t=>Fc(t,I.p90),color:css('--s-act')},
+      {f:Bc,from:0,to:80,color:css('--s-base'),dash:'6 4'},
+      {f:Rc,from:0,to:82,color:css('--s-rev')},
+      {f:Ac,from:0,to:DD,color:css('--s-act'),width:3},
+      {f:t=>Fc(t,fin),from:DD,to:fin,color:css('--s-act'),dash:'6 4'}
+    ],
+    under:[(s,x,y,m,w,h)=>{el('line',{x1:x(DD),x2:x(DD),y1:m.t,y2:h-m.b,stroke:css('--ink-2'),'stroke-width':1},s);txt(s,x(DD)+5,m.t+10,'today','ax');}],
+    over:[(s,x,y)=>{
+      el('circle',{cx:x(DD),cy:y(A42),r:5,fill:css('--s-act'),stroke:css('--surface'),'stroke-width':2},s);
+      txt(s,x(DD)+10,y(A42)+22,pct(A42)+' actual','lab-b','start');
+      txt(s,x(DD)-8,y(Rc(DD))-10,pct(Rc(DD))+' planned','lab','end');
+      el('circle',{cx:x(fin),cy:y(1),r:5,fill:css('--surface'),stroke:css('--s-act'),'stroke-width':2},s);
+      txt(s,x(fin),y(1)-10,fd(fin),'lab-b','middle');
+    }],
+    tip:t=>`<b>Week ${t} · ${fd(t)}</b>`+(t<=80?row('Baseline v1',pct(Bc(t))):'')+(t<=82?row('Revision v3',pct(Rc(t))):'')+(t<=DD?row('Actual',pct(Ac(t))):'')+(t>DD&&t<=fin?row('Forecast P50',pct(Fc(t,fin))):'')
+  });
+}
+
+function renderWeekly(){
+  const host=document.getElementById('weekly');
+  const {s,w,h}=mkSvg(host,280);
+  const m={l:40,r:10,t:12,b:28}, x=sc(.5,DD+.5,m.l,w-m.r), y=sc(0,2.4,h-m.b,m.t), bw=(w-m.l-m.r)/DD;
+  [0,.8,1.6,2.4].forEach(v=>{el('line',{x1:m.l,x2:w-m.r,y1:y(v),y2:y(v),class:v?'gl':'bl'},s);txt(s,m.l-6,y(v)+4,v.toFixed(1)+'%','ax','end');});
+  const pl=[];
+  for(let t=1;t<=DD;t++){
+    const a=(Ac(t)-Ac(t-1))*100, p=(Rc(t)-Rc(t-1))*100;
+    const r=el('rect',{x:x(t)-bw/2+1,y:y(a),width:Math.max(1,bw-2),height:y(0)-y(a),rx:Math.min(2,bw/4),fill:t>=39?css('--serious'):css('--s-act')},s);
+    pl.push([x(t)-bw/2,y(p)],[x(t)+bw/2,y(p)]);
+    hover(r,()=>`<b>Week ${t} · ${fd(t-1)}</b>`+row('Actual',a.toFixed(2)+'%')+row('Planned (v3)',p.toFixed(2)+'%')+row('Variance',(a-p>=0?'+':'')+(a-p).toFixed(2)+'%'));
+  }
+  el('path',{d:path(pl),fill:'none',stroke:css('--s-rev'),'stroke-width':2},s);
+  [1,10,20,30,42].forEach(t=>txt(s,x(t),h-m.b+17,'wk '+t,'ax','middle'));
+  txt(s,x(40.5),y(2.15),'switchgear wait','lab','middle',{style:'font-size:11px'});
+}
+
+function renderEVM(){
+  const pv=Rc(DD), ev=A42, spi=ev/pv;
+  // SPI(t): time where revision curve equals EV
+  let es=0;for(let t=0;t<=82;t+=.05){if(Rc(t)<=ev) es=t;}
+  const spit=es/DD;
+  document.getElementById('evm').innerHTML=
+    `<tr><th>Measure</th><th class="n">Value</th><th>Meaning</th></tr>`+
+    `<tr><td>Planned progress (v3)</td><td class="n">${(pv*100).toFixed(1)}%</td><td>Where the current plan says we should be</td></tr>`+
+    `<tr><td>Earned progress</td><td class="n">${(ev*100).toFixed(1)}%</td><td>Work actually completed</td></tr>`+
+    `<tr><td>SPI</td><td class="n">${spi.toFixed(2)}</td><td>${Math.round((1-spi)*100)}% less work done than planned</td></tr>`+
+    `<tr><td>Schedule variance, time</td><td class="n">${(DD-es).toFixed(1)} wk</td><td>We are where the plan expected to be on ${fd(es)}</td></tr>`+
+    `<tr><td>SPI(t)</td><td class="n">${spit.toFixed(2)}</td><td>Time-based index, used for the forecast</td></tr>`+
+    `<tr><td>CPI</td><td class="n">${CPI.toFixed(3)}</td><td>Spending $1.015 for each $1 of work earned</td></tr>`;
+}
+
+function renderProb(I){
+  const host=document.getElementById('prob');
+  const {s,w,h}=mkSvg(host,240);
+  const data=PROB.map(([wk,p])=>[wk-I.rec,p]);
+  const m={l:36,r:8,t:24,b:30}, x0=78,x1=94, bwid=(w-m.l-m.r)/(x1-x0+1), x=v=>m.l+(v-x0)*bwid, y=sc(0,24,h-m.b,m.t);
+  [0,8,16,24].forEach(v=>{el('line',{x1:m.l,x2:w-m.r,y1:y(v),y2:y(v),class:v?'gl':'bl'},s);txt(s,m.l-6,y(v)+4,v+'%','ax','end');});
+  let cum=0;
+  data.forEach(([wk,p])=>{cum+=p;const c=cum;
+    const late=wk>CONTRACT;
+    const r=el('rect',{x:x(wk)+1,y:y(p),width:bwid-2,height:y(0)-y(p),rx:Math.min(3,bwid/4),fill:late?css('--serious'):css('--s-act')},s);
+    hover(r,()=>`<b>Week of ${fd(wk)}</b>`+row('Chance of finishing this week',p+'%')+row('Chance of finishing by then',c+'%'));
+  });
+  const xc=x(CONTRACT+1);
+  el('line',{x1:xc,x2:xc,y1:m.t-6,y2:h-m.b,stroke:css('--crit'),'stroke-dasharray':'5 4','stroke-width':1.5},s);
+  txt(s,xc-4,m.t-10,'Tenant date','lab','end',{style:'font-size:11px'});
+  [[I.fin,'P50'],[I.p80,'P80']].forEach(([wk,l])=>{txt(s,x(wk)+bwid/2,y(PROB.find(p=>p[0]-I.rec===wk)[1])-6,l,'lab-b','middle');});
+  for(let v=x0;v<=x1;v+=w<500?4:2) txt(s,x(v)+bwid/2,h-m.b+17,fd(v).replace(/ \d{4}$/,''),'ax','middle');
+  const onTime=data.filter(d=>d[0]<=CONTRACT).reduce((a,d)=>a+d[1],0);
+  document.getElementById('probSub').textContent=`${onTime}% chance of handing over by the tenant date of ${fd(CONTRACT)}. Bars in orange finish after it.`;
+  document.getElementById('ptable').innerHTML=`<tr><th>Confidence</th><th>Handover by</th><th class="n">vs revision v3</th></tr>`+
+    [['P10 (optimistic)',I.p10],['P50 (most likely)',I.fin],['P80 (commit externally)',I.p80],['P90 (cautious)',I.p90]].map(([k,v])=>`<tr><td>${k}</td><td>${fd(v)}</td><td class="n">${v-82>0?'+':''}${v-82} wk</td></tr>`).join('');
+}
+
+function resF(t){return t<36?0:t<39?(t-36)/8*60:t<=41?12:t<46?12+(t-41)/5*66:t<=54?78:t<=66?64:t<83?64*(83-t)/17:0;}
+function resB(t){return t<36?0:t<44?(t-36)/8*60:t<=64?60:t<76?60*(76-t)/12:0;}
+function renderRes(){
+  const host=document.getElementById('res');
+  const {s,w,h}=mkSvg(host,240);
+  const x0=32,x1=86, m={l:34,r:10,t:12,b:28}, bwid=(w-m.l-m.r)/(x1-x0+1), x=v=>m.l+(v-x0)*bwid, y=sc(0,90,h-m.b,m.t);
+  [0,30,60,90].forEach(v=>{el('line',{x1:m.l,x2:w-m.r,y1:y(v),y2:y(v),class:v?'gl':'bl'},s);txt(s,m.l-6,y(v)+4,v,'ax','end');});
+  let over=0,peak=0;
+  for(let t=x0;t<=x1;t++){
+    const d=Math.round(resF(t));peak=Math.max(peak,d);const under=Math.min(d,70);
+    const g=el('g',{},s);
+    if(d>0) el('rect',{x:x(t)+1,y:y(under),width:Math.max(1,bwid-2),height:y(0)-y(under),fill:css('--s-act')},g);
+    if(d>70){over++;el('rect',{x:x(t)+1,y:y(d),width:Math.max(1,bwid-2),height:y(70)-y(d)-2,fill:css('--crit')},g);}
+    el('rect',{x:x(t),y:m.t,width:bwid,height:h-m.t-m.b,fill:'transparent'},g);
+    hover(g,()=>`<b>Week of ${fd(t)}</b>`+row('Forecast demand',d)+row('Baseline demand',Math.round(resB(t)))+row('Available',70)+(d>70?row('Shortfall',d-70):''));
+  }
+  const pts=[];for(let t=x0;t<=x1;t+=.5) pts.push([x(t)+bwid/2,y(resB(t))]);
+  el('path',{d:path(pts),fill:'none',stroke:css('--s-base'),'stroke-width':2},s);
+  el('line',{x1:m.l,x2:w-m.r,y1:y(70),y2:y(70),stroke:css('--muted'),'stroke-width':1.5,'stroke-dasharray':'5 4'},s);
+  for(let v=36;v<=x1;v+=w<500?16:8) txt(s,x(v)+bwid/2,h-m.b+17,fm(v),'ax','middle');
+  txt(s,x(40)+bwid/2,y(12)-6,'idle','lab','middle',{style:'font-size:11px'});
+  document.getElementById('resWhy').innerHTML=`<b>Plain language:</b> for 3 weeks the crew had nothing to install, so the subcontractor sent most of them elsewhere. When work resumes, Zone B catches up at the same time as Zone C starts, and demand peaks at ${peak} people against 70 available for ${over} weeks. Without action, that shortfall either stretches the work or means paying agency rates.`;
+}
+
+function renderCost(I){
+  const host=document.getElementById('cost');
+  const CA=t=>BUDGET*Ac(t)/CPI, CA42=CA(DD);
+  const CF=t=>t<=DD?CA(t):CA42+(I.eac-CA42)*(Fc(t,I.fin)-A42)/(1-A42);
+  weekChart(host,{h:240,x0:0,x1:94,y0:0,y1:50,yt:[0,10,20,30,40,50],yf:v=>'$'+v+'M',ml:46,xstep:16,xstepS:24,
+    series:[{f:t=>BUDGET*Bc(t),from:0,to:80,color:css('--s-base'),dash:'6 4'},{f:CA,from:0,to:DD,color:css('--s-act'),width:3},{f:CF,from:DD,to:I.fin,color:css('--s-act'),dash:'6 4'}],
+    under:[(s,x,y,m,w,h)=>{el('line',{x1:x(DD),x2:x(DD),y1:m.t,y2:h-m.b,stroke:css('--ink-2')},s);}],
+    over:[(s,x,y)=>{el('circle',{cx:x(I.fin),cy:y(I.eac),r:4.5,fill:css('--surface'),stroke:css('--s-act'),'stroke-width':2},s);txt(s,x(I.fin)-6,y(I.eac)+18,'EAC $'+I.eac.toFixed(2)+'M','lab-b','end');}],
+    tip:t=>`<b>${fd(t)}</b>`+(t<=80?row('Baseline',`$${(BUDGET*Bc(t)).toFixed(1)}M`):'')+(t<=I.fin?row(t<=DD?'Actual':'Forecast',`$${CF(t).toFixed(1)}M`):'')
+  });
+  document.getElementById('costTable').innerHTML=`<tr><th>Cost of the delay</th><th class="n">Amount</th></tr>`+I.rows.map(r=>`<tr><td>${r[0]}</td><td class="n">${money(r[1])}</td></tr>`).join('')+`<tr class="tot"><td>Added project cost</td><td class="n">${money(I.direct)}</td></tr>`;
+}
+
+function renderImpacts(I){
+  const cont=CONTINGENCY-I.direct;
+  const chip=(k,t)=>`<span class="chip ${k}"><i></i>${t}</span>`;
+  const sev=(v,a,b)=>v>=b?['crit','Critical']:v>=a?['ser','Serious']:['warn','Watch'];
+  const cards=[
+    ['Schedule',...sev(I.slip,2,4),`+${I.slip} wk`,`Handover moves from ${fd(82)} to ${fd(I.fin)} (P50). P80 is ${fd(I.p80)}.`],
+    ['Cost',...sev(I.direct,500,800),money(I.direct),`Forecast final cost $${I.eac.toFixed(2)}M against a $48.0M budget, ${((I.eac/BUDGET-1)*100).toFixed(1)}% over.`],
+    ['Contingency',...(cont<300?['crit','Critical']:cont<600?['ser','Serious']:['warn','Watch']),money(Math.max(0,cont))+' left',`Of $1.10M remaining, ${Math.round(I.direct/CONTINGENCY*100)}% would be used by this one event, with 9 months still to run.`],
+    ['Revenue',...sev(I.slip,2,4),money(I.revenue),`The tenant's lease starts at handover. Each week late defers $310k of rent.`],
+    ['Cash flow','warn','Watch','$3.1M shifts',`About $3.1M of spend moves from Q2 to Q3 2027. Funding draws need re-timing with the lender.`],
+    ['Resources','ser','Serious','9 wk short',`Electrical crew demand exceeds supply for 9 weeks, peaking 8 people short.`],
+    ['Contracts',...(I.fin>CONTRACT?['ser','Serious']:['good','On track']),I.fin>CONTRACT?`${I.fin-CONTRACT} wk penalty`:'No penalty',`Tenant penalty applies after ${fd(CONTRACT)}. Supplier owes up to $210k in delay damages.`],
+    ['Quality and safety',...(state.B?['ser','Serious']:['warn','Watch']),state.B?'Raised':'Watch',state.B?'Weekend shifts during commissioning raise fatigue and defect risk.':'A shorter testing window raises the chance of defects at handover. Keep the test plan intact.']
+  ];
+  document.getElementById('impactGrid').innerHTML=cards.map(c=>`<div class="imp"><div class="top"><span class="lbl">${c[0]}</span>${chip(c[1],c[2])}</div><div class="v num">${c[3]}</div><p>${c[4]}</p></div>`).join('');
+}
+
+function renderHeadline(I){
+  const none=!state.B&&!state.C&&!state.D;
+  const pill=document.getElementById('scnPill');pill.classList.toggle('rec',!none);
+  const names=['B','C','D'].filter(k=>state[k]).map(k=>'option '+k);
+  document.getElementById('scnName').textContent=none?'Scenario: no recovery action':'Scenario: '+names.join(' + ');
+  document.getElementById('bigLine').innerHTML=none
+    ?`A 3-week supplier delay is now forecast to push handover <em>5 weeks</em> late, to ${fd(I.fin)}, and cost about <em>${money(I.total)}</em> in extra spend and lost rent.`
+    :`With ${names.join(' and ')}, handover is forecast for ${fd(I.fin)}, <em>${I.slip} week${I.slip>1?'s':''}</em> late, with a combined impact of ${money(I.total)}, ${money(impacts({}).total-I.total)} better than doing nothing.`;
+  const t=(l,v,d,cls)=>`<div class="tile"><span class="lbl">${l}</span><span class="v num">${v}</span><span class="d ${cls||''}">${d}</span></div>`;
+  document.getElementById('tiles').innerHTML=
+    t('Handover P50',fd(I.fin),`+${I.slip} wk vs revision v3`,'bad')+
+    t('Handover P80',fd(I.p80),`+${I.p80-80} wk vs baseline v1`,'bad')+
+    t('Forecast final cost','$'+I.eac.toFixed(2)+'M',`+${money(I.direct)} vs $48.0M budget`,'bad')+
+    t('Rent deferred',money(I.revenue),`$310k per week of delay`,'bad')+
+    t('Progress',(A42*100).toFixed(1)+'%',`Plan said ${(Rc(DD)*100).toFixed(1)}%. SPI ${(A42/Rc(DD)).toFixed(2)}`,'bad')+
+    t('On-time chance',PROB.filter(p=>p[0]-I.rec<=CONTRACT).reduce((a,p)=>a+p[1],0)+'%',`of meeting the ${fd(CONTRACT)} tenant date`,'');
+}
+
+function renderOpts(){
+  const host=document.getElementById('opts');
+  host.innerHTML=OPTS.map(o=>{
+    const on=o.none?(!state.B&&!state.C&&!state.D):state[o.id];
+    return `<label class="opt ${on?'on':''}" for="opt${o.id}"><input type="checkbox" id="opt${o.id}" data-id="${o.id}" ${on?'checked':''}>
+      <span class="t">${o.none?'':o.id+'. '}${o.name}${o.id==='C'||o.id==='D'?'<span class="rec-tag">Recommended</span>':''}</span>
+      <span class="facts">${o.none?'<span>Recovers 0 wk</span><span>No extra cost</span>':`<span>Recovers ${o.weeks} wk</span><span>Costs ${money(o.cost)}</span>`}<span>Risk: ${o.risk}</span></span>
+      <p>${o.text}</p></label>`;}).join('');
+  host.querySelectorAll('input').forEach(inp=>inp.addEventListener('change',()=>{
+    const id=inp.dataset.id;
+    if(id==='E'){state.B=state.C=state.D=false;} else state[id]=inp.checked;
+    renderAll();
+    const again=document.getElementById('opt'+id); if(again) again.focus();
+  }));
+}
+
+function renderCmp(){
+  const sc=[['No action',{}],['B only',{B:1}],['C only',{C:1}],['D only',{D:1}],['C + D (recommended)',{C:1,D:1}],['B + C + D',{B:1,C:1,D:1}]];
+  const cur=JSON.stringify({B:!!state.B,C:!!state.C,D:!!state.D});
+  document.getElementById('cmp').innerHTML=`<tr><th>Scenario</th><th>Handover P50</th><th class="n">Weeks late</th><th class="n">Recovery cost</th><th class="n">Added cost</th><th class="n">Rent deferred</th><th class="n">Total impact</th><th>Risk</th></tr>`+
+   sc.map(([n,s])=>{const I=impacts(s);const key=JSON.stringify({B:!!s.B,C:!!s.C,D:!!s.D});
+     const risk=s.B?'High':s.C||s.D?'Medium':'Low';
+     return `<tr class="${key===cur?'sel':''}"><td>${n}</td><td>${fd(I.fin)}</td><td class="n">${I.slip}</td><td class="n">${money(I.accel)}</td><td class="n">${money(I.direct)}</td><td class="n">${money(I.revenue)}</td><td class="n"><b>${money(I.total)}</b></td><td>${risk}</td></tr>`;}).join('');
+}
+
+const MAP=[
+ ['ID / WBS *','task.wbs_code','1.3.4.2'],['Task Name *','task.name','Install MEP Zone B'],['Start / Finish *','task.planned_start / planned_finish','03 Aug 26'],
+ ['Duration','task.duration_days (working days)','45d'],['Predecessors *','dependency(type, lag)','12FS+2d, 18SS'],['Milestone (Y/N) or 0d','task.is_milestone','Y'],
+ ['Baseline Start / Finish','planversion = baseline snapshot','Auto-captured on first upload'],['% Complete','progress.pct_complete (weekly)','62%'],['Actual Start / Finish','progress.actual_start / actual_finish','14 Sep 26'],
+ ['Resource Names','assignment(resource, units)','Electrical crew [12]'],['Cost / Budget','costitem(budget, type)','$1.2M, labour'],['Calendar','calendar(working days, holidays)','Site 5-day, shutdown 21 Dec to 1 Jan'],
+ ['Float (optional)','checked against Paramap’s own CPM','Mismatch is flagged'],['Risk / Notes','risk(prob, impact, owner)','Switchgear FAT risk']
+];
+const ENTS=[
+ ['Project','Name, start, budget, currency, contract dates, penalty and revenue rates.','<code>id, budget, contract_finish, penalty_per_wk</code>'],
+ ['PlanVersion','A full snapshot of every upload: baseline, approved revision or weekly update.','<code>id, kind, data_date, approved_by</code>'],
+ ['Task','The unit of work, with planned dates, duration, WBS parent and calendar.','<code>wbs, name, start, finish, calendar_id</code>'],
+ ['Dependency','Links between tasks, with type FS, SS, FF or SF and lag.','<code>pred_id, succ_id, type, lag_days</code>'],
+ ['Progress','Weekly % complete and actual dates per task, per version.','<code>task_id, version_id, pct, actual_*</code>'],
+ ['Resource and Assignment','Crews, roles or people, their capacity and which tasks they work on.','<code>resource(capacity), assignment(units)</code>'],
+ ['CostItem','Budget per task or package, split into fixed and time-related.','<code>task_id, amount, type, rate_per_wk</code>'],
+ ['Calendar','Working days, shifts, holidays and shutdowns.','<code>workdays, exceptions[]</code>'],
+ ['Scenario','A what-if: option set, its overrides to tasks, costs and resources, and the computed result.','<code>options[], result{dates, cost, risk}</code>']
+];
+
+function renderStatic(){
+  document.getElementById('mapTable').innerHTML=`<tr><th>Column in the plan</th><th>Maps to</th><th>Example</th></tr>`+MAP.map(r=>`<tr><td>${r[0]}</td><td class="mono" style="font-size:12px">${r[1]}</td><td>${r[2]}</td></tr>`).join('');
+  document.getElementById('ents').innerHTML=ENTS.map(e=>`<div class="ent"><h3>${e[0]}</h3><p>${e[1]}</p><p>${e[2]}</p></div>`).join('');
+}
+
+function renderAll(){
+  const I=impacts(state);
+  renderHeadline(I);renderOpts();renderCmp();renderImpacts(I);
+  renderMStrip(I);renderMTA(I);renderSCurve(I);renderProb(I);renderCost(I);
+}
+function renderCharts(){const I=impacts(state);renderRipple();renderWaterfall();renderWeekly();renderRes();renderMStrip(I);renderMTA(I);renderSCurve(I);renderProb(I);renderCost(I);}
+
+document.getElementById('btnRec').addEventListener('click',()=>{state.B=false;state.C=true;state.D=true;renderAll();});
+document.getElementById('btnNone').addEventListener('click',()=>{state.B=state.C=state.D=false;renderAll();});
+
+renderStatic();renderEVM();renderAll();renderRipple();renderWaterfall();renderWeekly();renderRes();
+let rt;const ro=new ResizeObserver(()=>{clearTimeout(rt);rt=setTimeout(renderCharts,120);});ro.observe(document.querySelector('.wrap'));
+const mq=matchMedia('(prefers-color-scheme: dark)');mq.addEventListener&&mq.addEventListener('change',renderCharts);
+new MutationObserver(renderCharts).observe(document.documentElement,{attributes:true,attributeFilter:['data-theme']});
+})();
+</script>
+
+</body>
+</html>

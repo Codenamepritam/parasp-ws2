@@ -67,26 +67,26 @@
            ===================================================== */
         .hero {
             min-height: 78vh; height: auto;
-            background: linear-gradient(135deg, #FCFBF8 0%, #F2F5F8 100%);
-            display: flex; align-items: center; justify-content: center;
-            text-align: center; color: var(--text); position: relative;
-            padding: 7rem 2rem 5rem;
+            background: #F8F4EC url('paraspect-hero-workspace.png') center right / cover no-repeat;
+            display: flex; align-items: center; justify-content: flex-start;
+            text-align: left; color: var(--text); position: relative;
+            padding: 7rem max(2rem, calc((100vw - 1200px) / 2)) 5rem;
+            min-height: 78vh;
+            isolation: isolate;
         }
         .hero::before {
-            content: ''; position: absolute; width: 360px; height: 360px;
-            right: 8%; top: 12%; border-radius: 50%;
-            background: radial-gradient(circle, rgba(142,167,190,.22) 0%, rgba(142,167,190,0) 70%);
+            content: ''; position: absolute; inset: 0; z-index: -1;
+            background: linear-gradient(90deg, rgba(250,247,240,.97) 0%, rgba(250,247,240,.90) 32%, rgba(250,247,240,.28) 58%, rgba(250,247,240,0) 75%);
             pointer-events: none;
         }
-        .hero-content { position: relative; z-index: 1; max-width: 900px; }
+        .hero-content { position: relative; z-index: 1; max-width: 650px; padding: 2rem 0; }
         .hero h1 { color: #173F66; letter-spacing: -0.045em; }
-        .hero p { color: #586B7A; max-width: 780px; margin-left: auto; margin-right: auto; }
+        .hero p { color: #586B7A; max-width: 600px; margin-left: 0; margin-right: 0; }
         .hero .cta-button { background: #173F66; color: #fff; box-shadow: 0 10px 28px rgba(23,63,102,.18); }
         .hero .cta-button:hover { background: #102F4D; }
 
-        .hero-content { max-width: 1200px; padding: 2rem; }
-        .hero h1 { font-size: 4.5rem; margin-bottom: 1.5rem; font-weight: 800; line-height: 1.2; }
-        .hero p { font-size: 2.3rem; margin-bottom: 2.5rem; opacity: 0.95; }
+        .hero h1 { font-size: clamp(2.8rem, 4.6vw, 4.5rem); margin-bottom: 1.5rem; font-weight: 800; line-height: 1.08; }
+        .hero p { font-size: 1.35rem; margin-bottom: 2.5rem; line-height: 1.7; }
 
         .cta-button {
             display: inline-block; padding: 1.2rem 3rem; background: white; color: var(--primary);
@@ -443,9 +443,11 @@
             }
             .nav-links.active { display: flex; }
             .mobile-toggle { display: flex; }
-            .hero { min-height: 72vh; height: auto; padding: 6rem 1.5rem 4rem; }
+            .hero { min-height: 72vh; height: auto; padding: 6rem 1.5rem 4rem; background-position: 62% center; }
+            .hero::before { background: linear-gradient(90deg, rgba(250,247,240,.97) 0%, rgba(250,247,240,.86) 58%, rgba(250,247,240,.40) 100%); }
+            .hero-content { max-width: 100%; }
             .hero h1 { font-size: 2.5rem; }
-            .hero p { font-size: 1.35rem; }
+            .hero p { font-size: 1.15rem; }
             .products-grid, .pillars-grid { grid-template-columns: 1fr; }
             .product-body { padding: 1.5rem; }
             .pillar-card { padding: 1.6rem; }
@@ -562,7 +564,7 @@
                             <p>Understand how project delays affect milestones, budgets and resources. Paramap is evolving to help project teams explore dependencies, assess potential impacts and make more informed delivery decisions.</p>
                             <div class="product-actions">
                                 <a class="product-link primary" href="paramap.html">Explore Paramap →</a>
-                                <a class="product-link secondary" href="paramap-demo.html">View live demo</a>
+                                <a class="product-link secondary" href="paramapdemo.html">View live demo</a>
                             </div>
                         </div>
                     </article>
@@ -587,7 +589,7 @@
                         <div class="product-body">
                             <div class="product-kicker">Family heritage &amp; legacy</div>
                             <h3>FrameMyRoots</h3>
-                            <p>Turn your family's history into something future generations can explore and treasure with beautifully designed family trees, heritage posters and legacy books.</p>
+                            <p>Turn your family's history into something future generations can explore and treasure with beautifully designed family trees, heritage posters and legacy books. Visit https://framemyroots.com to know more.</p>
                             <div class="product-actions">
                                 <a class="product-link primary" href="https://framemyroots.com" target="_blank" rel="noopener noreferrer">Explore FrameMyRoots ↗</a>
                             </div>
